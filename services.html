@@ -3,9 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services - JAYPCDOC HUB UG LTD</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Our Services - PCDOC HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c0392b;
+            --secondary: #2c3e50;
+            --light: #f8f9fa;
+            --dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+        /* Loader */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+
+        .loader-wrapper.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), #e74c3c);
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled {
+            padding: 0.5rem 5%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        .nav-menu a.active {
+            color: var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background: var(--dark);
+            transition: all 0.3s;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8rem 5% 4rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 3rem 0;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 5%;
+        }
+
+        .category-tab {
+            padding: 0.8rem 2rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .category-tab:hover,
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(192,57,43,0.3);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid #eee;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(192,57,43,0.2);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .product-badge.new {
+            background: #27ae60;
+        }
+
+        .product-badge.sale {
+            background: #e67e22;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-specs {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price small {
+            font-size: 0.9rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+
+        .product-stock {
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .product-stock.low {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-add-to-cart,
+        .btn-quick-view {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-add-to-cart {
+            flex: 1;
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-add-to-cart:hover {
+            background: #a93226;
+        }
+
+        .btn-quick-view {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .btn-quick-view:hover {
+            background: #e9ecef;
+        }
+
+        /* Quick View Modal */
+        .quick-view-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quick-view-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .modal-image img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 5% 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            z-index: 99;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                padding: 2rem 0;
+                z-index: 99;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu li {
+                margin: 1rem 0;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+
+            .category-tab {
+                text-align: center;
+            }
+
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Loading Spinner -->
@@ -17,25 +626,26 @@
     <div class="progress-bar" id="progressBar"></div>
 
     <!-- Header -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="logo.png" alt="JAYPCDOC HUB Logo" class="logo-img">
-                <span class="logo-text">JAYPCDOC HUB</span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="services.html" class="active">Services</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </nav>
-    </header>
+  <!-- Header -->
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="PCDOC HUB Logo" class="logo-img">
+            <span class="logo-text">PCDOC HUB</span>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html" class="active">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+</header>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -56,19 +666,20 @@
             <button class="category-tab" onclick="filterProducts('desktops')">Desktops</button>
             <button class="category-tab" onclick="filterProducts('accessories')">Accessories</button>
             <button class="category-tab" onclick="filterProducts('storage')">Storage</button>
+        
         </div>
 
         <!-- Products Grid -->
         <div class="products-grid" id="productsGrid">
-            <!-- Laptops -->
+            <!-- Dell XPS 15 -->
             <div class="product-card" data-category="laptops">
                 <span class="product-badge new">NEW</span>
-                <img src="https://via.placeholder.com/300x200?text=Dell+XPS+15" alt="Dell XPS 15" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400" alt="Dell XPS 15" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Laptops</div>
                     <h3 class="product-title">Dell XPS 15</h3>
-                    <div class="product-specs">Intel i7, 16GB RAM, 512GB SSD</div>
-                    <div class="product-price">UGX 4,500,000</div>
+                    <div class="product-specs">Intel i7-13700H, 32GB RAM, 1TB SSD, RTX 4050</div>
+                    <div class="product-price">UGX 5,200,000</div>
                     <span class="product-stock">In Stock (3 units)</span>
                     <div class="product-actions">
                         <button class="btn-add-to-cart" onclick="addToCart('Dell XPS 15')"><i class="fas fa-shopping-cart"></i> Inquire</button>
@@ -77,13 +688,31 @@
                 </div>
             </div>
 
+            <!-- MacBook Pro 14 -->
             <div class="product-card" data-category="laptops">
-                <img src="https://via.placeholder.com/300x200?text=HP+EliteBook" alt="HP EliteBook" class="product-image" onerror="this.src='logo.png'">
+                <span class="product-badge new">NEW</span>
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400" alt="MacBook Pro" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Laptops</div>
-                    <h3 class="product-title">HP EliteBook 840</h3>
-                    <div class="product-specs">Intel i5, 8GB RAM, 256GB SSD</div>
-                    <div class="product-price">UGX 2,800,000</div>
+                    <h3 class="product-title">MacBook Pro 14"</h3>
+                    <div class="product-specs">M3 Pro, 18GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 6,800,000</div>
+                    <span class="product-stock">In Stock (2 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('MacBook Pro 14')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('macbook-pro-14')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HP EliteBook -->
+            <div class="product-card" data-category="laptops">
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400" alt="HP Laptop" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">HP EliteBook 840 G10</h3>
+                    <div class="product-specs">Intel i7-1365U, 16GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 3,900,000</div>
                     <span class="product-stock">In Stock (5 units)</span>
                     <div class="product-actions">
                         <button class="btn-add-to-cart" onclick="addToCart('HP EliteBook 840')"><i class="fas fa-shopping-cart"></i> Inquire</button>
@@ -92,31 +721,65 @@
                 </div>
             </div>
 
+            <!-- Lenovo ThinkPad -->
             <div class="product-card" data-category="laptops">
-                <span class="product-badge sale">SALE</span>
-                <img src="https://via.placeholder.com/300x200?text=Lenovo+ThinkPad" alt="Lenovo ThinkPad" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400" alt="Lenovo ThinkPad" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Laptops</div>
-                    <h3 class="product-title">Lenovo ThinkPad T14</h3>
-                    <div class="product-specs">AMD Ryzen 5, 16GB RAM, 512GB SSD</div>
-                    <div class="product-price">UGX 3,200,000 <small>UGX 3,800,000</small></div>
-                    <span class="product-stock">In Stock (4 units)</span>
+                    <h3 class="product-title">Lenovo ThinkPad X1 Carbon</h3>
+                    <div class="product-specs">Intel i7-1365U, 16GB RAM, 1TB SSD</div>
+                    <div class="product-price">UGX 4,500,000</div>
+                    <span class="product-stock">In Stock (3 units)</span>
                     <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('Lenovo ThinkPad T14')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('lenovo-thinkpad-t14')"><i class="fas fa-eye"></i></button>
+                        <button class="btn-add-to-cart" onclick="addToCart('Lenovo ThinkPad X1 Carbon')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('lenovo-x1-carbon')"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
             </div>
 
-            <!-- Desktops -->
+            <!-- ASUS ROG -->
+            <div class="product-card" data-category="laptops">
+                <span class="product-badge new">NEW</span>
+                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400" alt="Gaming Laptop" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">ASUS ROG Strix G16</h3>
+                    <div class="product-specs">Intel i9-13980HX, 32GB RAM, 1TB SSD, RTX 4070</div>
+                    <div class="product-price">UGX 5,800,000</div>
+                    <span class="product-stock">In Stock (2 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('ASUS ROG Strix G16')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('asus-rog-g16')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acer Swift 3 -->
+            <div class="product-card" data-category="laptops">
+                <span class="product-badge sale">SALE</span>
+                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400" alt="Acer Laptop" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">Acer Swift 3</h3>
+                    <div class="product-specs">Intel i5-1240P, 8GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 2,300,000 <small>UGX 2,800,000</small></div>
+                    <span class="product-stock">In Stock (7 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Acer Swift 3')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('acer-swift-3')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HP Desktop -->
             <div class="product-card" data-category="desktops">
-                <img src="https://via.placeholder.com/300x200?text=HP+Pavilion+Desktop" alt="HP Pavilion Desktop" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400" alt="HP Desktop" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Desktops</div>
                     <h3 class="product-title">HP Pavilion Desktop</h3>
-                    <div class="product-specs">Intel i5, 8GB RAM, 1TB HDD + 256GB SSD</div>
-                    <div class="product-price">UGX 2,200,000</div>
-                    <span class="product-stock">In Stock (3 units)</span>
+                    <div class="product-specs">Intel i5-13400, 16GB RAM, 512GB SSD + 1TB HDD</div>
+                    <div class="product-price">UGX 2,500,000</div>
+                    <span class="product-stock">In Stock (4 units)</span>
                     <div class="product-actions">
                         <button class="btn-add-to-cart" onclick="addToCart('HP Pavilion Desktop')"><i class="fas fa-shopping-cart"></i> Inquire</button>
                         <button class="btn-quick-view" onclick="quickView('hp-pavilion-desktop')"><i class="fas fa-eye"></i></button>
@@ -124,13 +787,14 @@
                 </div>
             </div>
 
+            <!-- Dell OptiPlex -->
             <div class="product-card" data-category="desktops">
-                <img src="https://via.placeholder.com/300x200?text=Dell+OptiPlex" alt="Dell OptiPlex" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=400" alt="Dell Desktop" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Desktops</div>
                     <h3 class="product-title">Dell OptiPlex 7080</h3>
-                    <div class="product-specs">Intel i7, 16GB RAM, 512GB SSD</div>
-                    <div class="product-price">UGX 3,500,000</div>
+                    <div class="product-specs">Intel i7-10700, 32GB RAM, 1TB SSD</div>
+                    <div class="product-price">UGX 3,800,000</div>
                     <span class="product-stock">In Stock (2 units)</span>
                     <div class="product-actions">
                         <button class="btn-add-to-cart" onclick="addToCart('Dell OptiPlex 7080')"><i class="fas fa-shopping-cart"></i> Inquire</button>
@@ -139,346 +803,150 @@
                 </div>
             </div>
 
-            <!-- Accessories -->
-            <div class="product-card" data-category="accessories">
-                <img src="https://via.placeholder.com/300x200?text=Logitech+Mouse" alt="Logitech Mouse" class="product-image" onerror="this.src='logo.png'">
-                <div class="product-details">
-                    <div class="product-category">Accessories</div>
-                    <h3 class="product-title">Logitech Wireless Mouse</h3>
-                    <div class="product-specs">2.4GHz, Silent Click, USB Receiver</div>
-                    <div class="product-price">UGX 45,000</div>
-                    <span class="product-stock">In Stock (20+ units)</span>
-                    <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('Logitech Wireless Mouse')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('logitech-mouse')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="accessories">
+            <!-- Mac Mini -->
+            <div class="product-card" data-category="desktops">
                 <span class="product-badge new">NEW</span>
-                <img src="https://via.placeholder.com/300x200?text=Mechanical+Keyboard" alt="Mechanical Keyboard" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=400" alt="Mac Mini" class="product-image">
                 <div class="product-details">
-                    <div class="product-category">Accessories</div>
-                    <h3 class="product-title">RGB Mechanical Keyboard</h3>
-                    <div class="product-specs">Blue Switches, Backlit, Wired</div>
-                    <div class="product-price">UGX 85,000</div>
-                    <span class="product-stock">In Stock (15 units)</span>
+                    <div class="product-category">Desktops</div>
+                    <h3 class="product-title">Apple Mac Mini</h3>
+                    <div class="product-specs">M2 Pro, 16GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 3,200,000</div>
+                    <span class="product-stock">In Stock (3 units)</span>
                     <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('RGB Mechanical Keyboard')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('mechanical-keyboard')"><i class="fas fa-eye"></i></button>
+                        <button class="btn-add-to-cart" onclick="addToCart('Apple Mac Mini')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('mac-mini')"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
             </div>
 
-            <!-- Storage -->
-            <div class="product-card" data-category="storage">
-                <img src="https://via.placeholder.com/300x200?text=Samsung+SSD" alt="Samsung SSD" class="product-image" onerror="this.src='logo.png'">
-                <div class="product-details">
-                    <div class="product-category">Storage</div>
-                    <h3 class="product-title">Samsung 870 EVO SSD</h3>
-                    <div class="product-specs">1TB, SATA III, Read: 560MB/s</div>
-                    <div class="product-price">UGX 280,000</div>
-                    <span class="product-stock">In Stock (8 units)</span>
-                    <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('Samsung 870 EVO SSD')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('samsung-ssd')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="storage">
-                <img src="https://via.placeholder.com/300x200?text=WD+External+HDD" alt="WD External HDD" class="product-image" onerror="this.src='logo.png'">
-                <div class="product-details">
-                    <div class="product-category">Storage</div>
-                    <h3 class="product-title">WD 2TB External HDD</h3>
-                    <div class="product-specs">USB 3.0, Portable, Plug-and-Play</div>
-                    <div class="product-price">UGX 320,000</div>
-                    <span class="product-stock">In Stock (12 units)</span>
-                    <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('WD 2TB External HDD')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('wd-external-hdd')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="storage">
-                <img src="https://via.placeholder.com/300x200?text=SanDisk+USB" alt="SanDisk USB" class="product-image" onerror="this.src='logo.png'">
-                <div class="product-details">
-                    <div class="product-category">Storage</div>
-                    <h3 class="product-title">SanDisk Ultra USB 3.0</h3>
-                    <div class="product-specs">64GB, 128GB, 256GB Available</div>
-                    <div class="product-price">From UGX 35,000</div>
-                    <span class="product-stock low">Limited Stock</span>
-                    <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('SanDisk Ultra USB')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('sandisk-usb')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- More Accessories -->
+            <!-- Logitech Mouse -->
             <div class="product-card" data-category="accessories">
-                <img src="https://via.placeholder.com/300x200?text=Headset" alt="Gaming Headset" class="product-image" onerror="this.src='logo.png'">
+                <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400" alt="Mouse" class="product-image">
                 <div class="product-details">
                     <div class="product-category">Accessories</div>
-                    <h3 class="product-title">Gaming Headset</h3>
-                    <div class="product-specs">7.1 Surround Sound, RGB, Noise-Cancelling</div>
-                    <div class="product-price">UGX 120,000</div>
-                    <span class="product-stock">In Stock (6 units)</span>
-                    <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('Gaming Headset')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('gaming-headset')"><i class="fas fa-eye"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="accessories">
-                <img src="https://via.placeholder.com/300x200?text=Laptop+Stand" alt="Laptop Stand" class="product-image" onerror="this.src='logo.png'">
-                <div class="product-details">
-                    <div class="product-category">Accessories</div>
-                    <h3 class="product-title">Adjustable Laptop Stand</h3>
-                    <div class="product-specs">Aluminum, Foldable, Ergonomic</div>
-                    <div class="product-price">UGX 65,000</div>
+                    <h3 class="product-title">Logitech MX Master 3S</h3>
+                    <div class="product-specs">Wireless, 8K DPI, USB-C Charging</div>
+                    <div class="product-price">UGX 185,000</div>
                     <span class="product-stock">In Stock (10 units)</span>
                     <div class="product-actions">
-                        <button class="btn-add-to-cart" onclick="addToCart('Laptop Stand')"><i class="fas fa-shopping-cart"></i> Inquire</button>
-                        <button class="btn-quick-view" onclick="quickView('laptop-stand')"><i class="fas fa-eye"></i></button>
+                        <button class="btn-add-to-cart" onclick="addToCart('Logitech MX Master 3S')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('mx-master-3s')"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- View All Products Button -->
-        <div style="text-align: center; margin-top: 3rem;">
-            <p class="contact-info" style="font-size: 1.1rem; color: var(--text-color);">
-                <i class="fas fa-info-circle" style="color: var(--primary-color);"></i> 
-                For more products and bulk orders, please <a href="contact.html" style="color: var(--primary-color); font-weight: 600;">contact us</a> directly
-            </p>
+            <!-- Keyboard -->
+            <div class="product-card" data-category="accessories">
+                <span class="product-badge new">NEW</span>
+                <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400" alt="Keyboard" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">Keychron K2 Pro</h3>
+                    <div class="product-specs">Mechanical, Hot-swappable, RGB, Bluetooth</div>
+                    <div class="product-price">UGX 250,000</div>
+                    <span class="product-stock">In Stock (8 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Keychron K2 Pro')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('keychron-k2')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitor -->
+            <div class="product-card" data-category="accessories">
+                <img src="https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?w=400" alt="Monitor" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">Dell UltraSharp 27" 4K</h3>
+                    <div class="product-specs">4K UHD, IPS, USB-C Hub</div>
+                    <div class="product-price">UGX 1,800,000</div>
+                    <span class="product-stock">In Stock (5 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Dell UltraSharp 27 4K')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('dell-ultrasharp')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Headset -->
+            <div class="product-card" data-category="accessories">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="Headset" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">SteelSeries Arctis Nova Pro</h3>
+                    <div class="product-specs">Wireless, ANC, Hi-Res Audio</div>
+                    <div class="product-price">UGX 550,000</div>
+                    <span class="product-stock">In Stock (4 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('SteelSeries Arctis Nova Pro')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('arctis-nova-pro')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Samsung SSD -->
+            <div class="product-card" data-category="storage">
+                <span class="product-badge new">NEW</span>
+                <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=400" alt="SSD" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">Samsung 990 Pro 2TB</h3>
+                    <div class="product-specs">NVMe M.2, PCIe 4.0, Read: 7450MB/s</div>
+                    <div class="product-price">UGX 450,000</div>
+                    <span class="product-stock">In Stock (12 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Samsung 990 Pro 2TB')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('samsung-990-pro')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WD HDD -->
+            <div class="product-card" data-category="storage">
+                <img src="https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=400" alt="Hard Drive" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">WD Black P10 4TB</h3>
+                    <div class="product-specs">External HDD, USB 3.2, Gaming Ready</div>
+                    <div class="product-price">UGX 480,000</div>
+                    <span class="product-stock">In Stock (8 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('WD Black P10 4TB')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('wd-black-p10')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USB Drive - THIS IS THE LAST ITEM AND WILL SHOW -->
+            <div class="product-card" data-category="storage">
+                <img src="https://images.unsplash.com/photo-1605648916362-1a7f1596c83f?w=400" alt="USB Drive" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">SanDisk Extreme Pro 256GB</h3>
+                    <div class="product-specs">USB 3.2, 420MB/s read, 380MB/s write</div>
+                    <div class="product-price">UGX 85,000</div>
+                    <span class="product-stock">In Stock (25 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('SanDisk Extreme Pro 256GB')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('sandisk-extreme-pro')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Quick View Modal -->
     <div class="quick-view-modal" id="quickViewModal">
         <span class="close-modal" onclick="closeQuickView()">&times;</span>
-        <div class="modal-content" id="modalContent">
-            <!-- Content will be loaded dynamically -->
-        </div>
+        <div class="modal-content" id="modalContent"></div>
     </div>
-
-    <!-- Services Section -->
-    <section class="services-full">
-        <div class="services-container">
-            <div class="services-grid-detailed">
-                
-                <!-- Web Development Services -->
-                <div class="service-category" id="web-development">
-                    <h2 class="category-title"><i class="fas fa-laptop-code"></i> Web Development</h2>
-                    <div class="service-items">
-                        <div class="service-item">
-                            <i class="fas fa-globe"></i>
-                            <div class="service-info">
-                                <h3>Custom Website Design</h3>
-                                <p>Tailored, responsive websites that reflect your brand identity and engage your audience. We create stunning websites that work perfectly on all devices.</p>
-                                <span class="service-price">Starting at $500</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-shopping-cart"></i>
-                            <div class="service-info">
-                                <h3>E-Commerce Solutions</h3>
-                                <p>Full-featured online stores with secure payment integration, inventory management, and user-friendly interfaces to help you sell products online effectively.</p>
-                                <span class="service-price">Starting at $1,200</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-cogs"></i>
-                            <div class="service-info">
-                                <h3>Web Application Development</h3>
-                                <p>Custom web applications to streamline your business processes, automate workflows, and improve operational efficiency with scalable solutions.</p>
-                                <span class="service-price">Contact for quote</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-search"></i>
-                            <div class="service-info">
-                                <h3>SEO & Digital Marketing</h3>
-                                <p>Improve your visibility and drive organic traffic to your website with our comprehensive SEO strategies and digital marketing campaigns.</p>
-                                <span class="service-price">Starting at $300/month</span>
-                            </div>
-                        </div>
-
-                        <div class="service-item">
-                            <i class="fas fa-code"></i>
-                            <div class="service-info">
-                                <h3>Website Maintenance</h3>
-                                <p>Regular updates, security patches, content management, and technical support to keep your website running smoothly and securely.</p>
-                                <span class="service-price">Starting at $150/month</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Computer Services -->
-                <div class="service-category" id="computer-services">
-                    <h2 class="category-title"><i class="fas fa-tools"></i> Computer Services</h2>
-                    <div class="service-items">
-                        <div class="service-item">
-                            <i class="fas fa-desktop"></i>
-                            <div class="service-info">
-                                <h3>Computer Repair & Maintenance</h3>
-                                <p>Professional diagnostic, repair, and preventive maintenance services for desktops, laptops, and workstations. Fast turnaround and quality service guaranteed.</p>
-                                <span class="service-price">Starting at $50</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-laptop"></i>
-                            <div class="service-info">
-                                <h3>Computer Sales</h3>
-                                <p>High-quality new and refurbished computers, laptops, and accessories at competitive prices. All systems come with warranty and after-sales support.</p>
-                                <span class="service-price">Varies by model</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-hdd"></i>
-                            <div class="service-info">
-                                <h3>Data Recovery</h3>
-                                <p>Professional data recovery services for hard drives, SSDs, USB drives, and other storage devices. Recover lost or deleted files quickly and safely.</p>
-                                <span class="service-price">Starting at $100</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <div class="service-info">
-                                <h3>Virus & Malware Removal</h3>
-                                <p>Complete system cleanup and protection against viruses, malware, spyware, and ransomware. We'll secure your system and prevent future infections.</p>
-                                <span class="service-price">Starting at $40</span>
-                            </div>
-                        </div>
-
-                        <div class="service-item">
-                            <i class="fas fa-print"></i>
-                            <div class="service-info">
-                                <h3>Printer & Peripheral Support</h3>
-                                <p>Installation, configuration, and repair services for printers, scanners, and other peripherals. Get your devices working seamlessly with your systems.</p>
-                                <span class="service-price">Starting at $30</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- IT Consulting -->
-                <div class="service-category" id="it-consulting">
-                    <h2 class="category-title"><i class="fas fa-chart-line"></i> IT Consulting</h2>
-                    <div class="service-items">
-                        <div class="service-item">
-                            <i class="fas fa-network-wired"></i>
-                            <div class="service-info">
-                                <h3>Network Setup & Security</h3>
-                                <p>Professional design, implementation, and security hardening of business networks. We ensure reliable connectivity and protection against cyber threats.</p>
-                                <span class="service-price">Contact for quote</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-cloud"></i>
-                            <div class="service-info">
-                                <h3>Cloud Services</h3>
-                                <p>Cloud migration, setup, and management services for businesses of all sizes. Leverage the power of cloud computing for scalability and efficiency.</p>
-                                <span class="service-price">Starting at $200/month</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-headset"></i>
-                            <div class="service-info">
-                                <h3>IT Support & Maintenance</h3>
-                                <p>Ongoing technical support and system maintenance for your business. Our team is available to resolve issues quickly and minimize downtime.</p>
-                                <span class="service-price">Starting at $150/month</span>
-                            </div>
-                        </div>
-                        
-                        <div class="service-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <div class="service-info">
-                                <h3>IT Training</h3>
-                                <p>Professional training in computer skills, software applications, and IT best practices. Empower your team with the knowledge they need to succeed.</p>
-                                <span class="service-price">Contact for rates</span>
-                            </div>
-                        </div>
-
-                        <div class="service-item">
-                            <i class="fas fa-database"></i>
-                            <div class="service-info">
-                                <h3>Backup & Disaster Recovery</h3>
-                                <p>Comprehensive backup solutions and disaster recovery planning to protect your critical business data and ensure business continuity.</p>
-                                <span class="service-price">Starting at $100/month</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Why Choose Us Section -->
-            <div class="why-choose-us">
-                <h2 class="section-title">Why Choose JAYPCDOC HUB?</h2>
-                <div class="why-grid">
-                    <div class="why-item">
-                        <i class="fas fa-clock"></i>
-                        <h4>24/7 Support</h4>
-                        <p>Round-the-clock technical support for all your IT needs</p>
-                    </div>
-                    <div class="why-item">
-                        <i class="fas fa-check-circle"></i>
-                        <h4>Certified Experts</h4>
-                        <p>Highly trained and certified professionals</p>
-                    </div>
-                    <div class="why-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>100% Satisfaction</h4>
-                        <p>Guaranteed quality service and customer satisfaction</p>
-                    </div>
-                    <div class="why-item">
-                        <i class="fas fa-bolt"></i>
-                        <h4>Fast Turnaround</h4>
-                        <p>Quick response and efficient service delivery</p>
-                    </div>
-                    <div class="why-item">
-                        <i class="fas fa-tag"></i>
-                        <h4>Best Prices</h4>
-                        <p>Competitive pricing on all products and services</p>
-                    </div>
-                    <div class="why-item">
-                        <i class="fas fa-wrench"></i>
-                        <h4>Warranty</h4>
-                        <p>All products come with warranty coverage</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Call to Action -->
-            <div class="services-cta">
-                <h3>Ready to Get Started?</h3>
-                <p>Contact us today for a free consultation and personalized quote tailored to your specific requirements. Let's discuss how we can help your business grow!</p>
-                <div class="cta-buttons">
-                    <a href="contact.html" class="btn btn-primary">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
-                    <a href="tel:+256704210089" class="btn btn-secondary"><i class="fas fa-phone"></i> Call Us Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>JAYPCDOC HUB</h4>
+                <h4>PCDOC HUB</h4>
                 <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
                 <p><i class="fas fa-phone"></i> +256 704210089</p>
                 <p><i class="fas fa-phone"></i> +256 779832156</p>
@@ -494,15 +962,6 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Our Products</h4>
-                <ul>
-                    <li><a href="#" onclick="filterProducts('laptops'); return false;">Laptops</a></li>
-                    <li><a href="#" onclick="filterProducts('desktops'); return false;">Desktops</a></li>
-                    <li><a href="#" onclick="filterProducts('accessories'); return false;">Accessories</a></li>
-                    <li><a href="#" onclick="filterProducts('storage'); return false;">Storage</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
                 <h4>Follow Us</h4>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook"></i></a>
@@ -513,7 +972,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 JAYPCDOC HUB UG LTD. All Rights Reserved.</p>
+            <p>&copy; 2026 PCDOC HUB UG LTD. All Rights Reserved.</p>
             <p>Designed with <i class="fas fa-heart"></i> by Jowie</p>
         </div>
     </footer>
@@ -523,6 +982,310 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="script.js"></script>
+    <script>
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded - initializing...');
+            initLoader();
+            initNavigation();
+            initScrollProgress();
+            initBackToTop();
+            initProductFilters();
+        });
+
+        // Loader
+        function initLoader() {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        loader.classList.add('fade-out');
+                    }, 500);
+                });
+            }
+        }
+
+        // Navigation
+        function initNavigation() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            const navbar = document.querySelector('.navbar');
+
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (hamburger && navMenu) {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                if (navbar) {
+                    if (window.scrollY > 100) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }
+            });
+        }
+
+        // Scroll Progress
+        function initScrollProgress() {
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                window.addEventListener('scroll', () => {
+                    const winScroll = document.documentElement.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = (winScroll / height) * 100;
+                    progressBar.style.width = scrolled + '%';
+                });
+            }
+        }
+
+        // Back to Top
+        function initBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 500) {
+                        backToTop.classList.add('show');
+                    } else {
+                        backToTop.classList.remove('show');
+                    }
+                });
+
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }
+
+        // Product Filtering
+        function filterProducts(category) {
+            console.log('Filtering:', category);
+            const products = document.querySelectorAll('.product-card');
+            const tabs = document.querySelectorAll('.category-tab');
+            
+            // Update active tab
+            tabs.forEach(tab => {
+                if (category === 'all' && tab.textContent === 'All Products') {
+                    tab.classList.add('active');
+                } else if (tab.textContent.toLowerCase().includes(category)) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Filter products
+            let visibleCount = 0;
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+            console.log('Visible products:', visibleCount);
+        }
+
+        function initProductFilters() {
+            if (document.querySelectorAll('.category-tab').length > 0) {
+                filterProducts('all');
+            }
+        }
+
+        // Quick View
+        function quickView(productId) {
+            console.log('Quick view:', productId);
+            const modal = document.getElementById('quickViewModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            if (!modal || !modalContent) return;
+
+            const products = {
+                'dell-xps-15': {
+                    title: 'Dell XPS 15',
+                    price: 'UGX 5,200,000',
+                    desc: 'Premium ultrabook with stunning display, ideal for professionals and creators.',
+                    specs: ['Intel Core i7-13700H', '32GB DDR5 RAM', '1TB NVMe SSD', 'NVIDIA RTX 4050 6GB', 'Windows 11 Pro', '2 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600'
+                },
+                'macbook-pro-14': {
+                    title: 'MacBook Pro 14"',
+                    price: 'UGX 6,800,000',
+                    desc: 'The most powerful MacBook Pro ever with M3 Pro chip.',
+                    specs: ['Apple M3 Pro Chip', '18GB Unified Memory', '512GB SSD', '14.2" Liquid Retina XDR', 'macOS Sonoma', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'
+                },
+                'hp-elitebook-840': {
+                    title: 'HP EliteBook 840 G10',
+                    price: 'UGX 3,900,000',
+                    desc: 'Business-class laptop with enterprise-grade security.',
+                    specs: ['Intel Core i7-1365U', '16GB DDR4 RAM', '512GB NVMe SSD', '14" Full HD Display', 'Windows 11 Pro', '3 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600'
+                },
+                'lenovo-x1-carbon': {
+                    title: 'Lenovo ThinkPad X1 Carbon',
+                    price: 'UGX 4,500,000',
+                    desc: 'Ultra-lightweight business laptop with legendary durability.',
+                    specs: ['Intel Core i7-1365U', '16GB LPDDR5 RAM', '1TB NVMe SSD', '14" 2.8K OLED Display', 'Windows 11 Pro', '3 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600'
+                },
+                'asus-rog-g16': {
+                    title: 'ASUS ROG Strix G16',
+                    price: 'UGX 5,800,000',
+                    desc: 'High-performance gaming laptop with advanced cooling.',
+                    specs: ['Intel Core i9-13980HX', '32GB DDR5 RAM', '1TB NVMe SSD', 'NVIDIA RTX 4070 8GB', 'Windows 11 Home', '2 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600'
+                },
+                'acer-swift-3': {
+                    title: 'Acer Swift 3',
+                    price: 'UGX 2,300,000',
+                    desc: 'Thin and light laptop perfect for students.',
+                    specs: ['Intel Core i5-1240P', '8GB LPDDR4X RAM', '512GB NVMe SSD', '14" Full HD IPS Display', 'Windows 11 Home', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600'
+                },
+                'hp-pavilion-desktop': {
+                    title: 'HP Pavilion Desktop',
+                    price: 'UGX 2,500,000',
+                    desc: 'Versatile desktop for home and office use.',
+                    specs: ['Intel Core i5-13400', '16GB DDR4 RAM', '512GB NVMe SSD + 1TB HDD', 'Windows 11 Home', 'WiFi 6', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=600'
+                },
+                'dell-optiplex-7080': {
+                    title: 'Dell OptiPlex 7080',
+                    price: 'UGX 3,800,000',
+                    desc: 'Powerful business desktop for demanding applications.',
+                    specs: ['Intel Core i7-10700', '32GB DDR4 RAM', '1TB NVMe SSD', 'Windows 10 Pro', 'Multiple Display Support', '3 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=600'
+                },
+                'mac-mini': {
+                    title: 'Apple Mac Mini',
+                    price: 'UGX 3,200,000',
+                    desc: 'Compact desktop with incredible performance.',
+                    specs: ['Apple M2 Pro Chip', '16GB Unified Memory', '512GB SSD', 'HDMI 2.1', '2 Thunderbolt 4 Ports', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=600'
+                },
+                'mx-master-3s': {
+                    title: 'Logitech MX Master 3S',
+                    price: 'UGX 185,000',
+                    desc: 'Master-level precision with quiet clicks.',
+                    specs: ['8K DPI Sensor', 'MagSpeed Wheel', 'USB-C Charging', '70-Day Battery', 'Bluetooth + USB', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600'
+                },
+                'keychron-k2': {
+                    title: 'Keychron K2 Pro',
+                    price: 'UGX 250,000',
+                    desc: 'Wireless mechanical keyboard with RGB.',
+                    specs: ['Gateron G Pro Switches', 'Hot-swappable', 'RGB Backlight', 'Bluetooth 5.1', '4000mAh Battery', '1 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600'
+                },
+                'dell-ultrasharp': {
+                    title: 'Dell UltraSharp 27" 4K',
+                    price: 'UGX 1,800,000',
+                    desc: 'Professional 4K monitor with exceptional color.',
+                    specs: ['27" 4K UHD', 'IPS Panel', '99% sRGB', 'USB-C Hub', 'Height Adjustable', '3 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?w=600'
+                },
+                'arctis-nova-pro': {
+                    title: 'SteelSeries Arctis Nova Pro',
+                    price: 'UGX 550,000',
+                    desc: 'Premium wireless gaming headset with ANC.',
+                    specs: ['Active Noise Cancellation', 'Hi-Res Audio', 'Wireless + Bluetooth', 'Dual Battery', 'ClearCast Mic', '2 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600'
+                },
+                'samsung-990-pro': {
+                    title: 'Samsung 990 Pro 2TB',
+                    price: 'UGX 450,000',
+                    desc: 'Ultra-fast NVMe SSD for gamers and professionals.',
+                    specs: ['2TB Capacity', 'PCIe 4.0', 'Read: 7450MB/s', 'Write: 6900MB/s', 'V-NAND Technology', '5 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=600'
+                },
+                'wd-black-p10': {
+                    title: 'WD Black P10 4TB',
+                    price: 'UGX 480,000',
+                    desc: 'High-capacity external HDD for gaming.',
+                    specs: ['4TB Capacity', 'USB 3.2', 'Read: 140MB/s', 'Rugged Design', 'No External Power', '2 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=600'
+                },
+                'sandisk-extreme-pro': {
+                    title: 'SanDisk Extreme Pro 256GB',
+                    price: 'UGX 85,000',
+                    desc: 'High-performance USB drive for fast transfers.',
+                    specs: ['256GB Capacity', 'USB 3.2', 'Read: 420MB/s', 'Write: 380MB/s', 'Aluminum Housing', '5 Year Warranty'],
+                    img: 'https://images.unsplash.com/photo-1605648916362-1a7f1596c83f?w=600'
+                }
+            };
+
+            const product = products[productId] || {
+                title: 'Product',
+                price: 'Contact for price',
+                desc: 'Contact us for more information.',
+                specs: ['Contact us for details'],
+                img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600'
+            };
+
+            modalContent.innerHTML = `
+                <div class="modal-grid">
+                    <div class="modal-image">
+                        <img src="${product.img}" alt="${product.title}">
+                    </div>
+                    <div class="modal-details">
+                        <h2 style="color:#c0392b; margin-top:0;">${product.title}</h2>
+                        <div style="font-size:1.8rem; font-weight:bold; color:#c0392b; margin:1rem 0;">${product.price}</div>
+                        <p style="margin:1rem 0; line-height:1.6;">${product.desc}</p>
+                        <div style="background:#f5f5f5; padding:1.5rem; border-radius:8px; margin:1.5rem 0;">
+                            <h4 style="margin-top:0; margin-bottom:1rem;">Key Specifications:</h4>
+                            <ul style="list-style:none; padding:0; margin:0;">
+                                ${product.specs.map(spec => `<li style="margin:0.8rem 0;"><i class="fas fa-check-circle" style="color:#c0392b; margin-right:0.8rem;"></i>${spec}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div style="display:flex; gap:1rem;">
+                            <button onclick="addToCart('${product.title}')" style="flex:1; padding:1rem; background:#c0392b; color:white; border:none; border-radius:5px; cursor:pointer;">
+                                <i class="fas fa-shopping-cart"></i> Inquire Now
+                            </button>
+                            <button onclick="window.location.href='contact.html'" style="flex:1; padding:1rem; background:#2c3e50; color:white; border:none; border-radius:5px; cursor:pointer;">
+                                <i class="fas fa-envelope"></i> Contact Us
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuickView() {
+            const modal = document.getElementById('quickViewModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function addToCart(productName) {
+            alert(`Thank you for your interest in ${productName}!\n\nA member of our team will contact you shortly. You can also call us at +256 704210089.`);
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('quickViewModal');
+            if (modal && e.target === modal) {
+                closeQuickView();
+            }
+        });
+    </script>
 </body>
 </html>
