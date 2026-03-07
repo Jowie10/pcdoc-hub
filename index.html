@@ -3,73 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAYPCDOC HUB | Digital Solutions</title>
-    <!-- CSS External File -->
-    <link rel="stylesheet" href="css/style.css">
+    <title>JAYPCDOC HUB - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header with Logo and Title combined -->
-        <div class="header-section">
-            <div class="logo-area">
-                <img src="images/screenshot-7.png" alt="JAYPCDOC HUB UG LTD Logo" width="80" height="80">
-                <h1>JAYPCDOC HUB <span class="light-text">UG LTD</span></h1>
+    <!-- Loading Spinner -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="JAYPCDOC HUB Logo" class="logo-image">
+                <span class="logo-text">JAYPCDOC HUB</span>
             </div>
-            <p class="tagline">Your Partner in Digital Innovation</p>
-        </div>
-
-        <!-- Professional Navigation -->
-        <nav class="main-nav">
-            <a href="index.html" class="active">🏠 Home</a>
-            <a href="pages/about.html">📖 About Us</a>
-            <a href="pages/services.html">⚙️ Services</a>
-            <a href="pages/contact.html">📞 Contact</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </nav>
+    </header>
 
-        <!-- Main Hero Section -->
-        <div class="hero-section">
-            <h2 class="no-border">Innovative Digital Solutions</h2>
-            <p class="hero-text">As a leading provider of innovative digital solutions, we specialize in selling, buying, repairing, creating, and managing websites and computers for businesses of all sizes. Our mission is to deliver end-to-end solutions that help our clients build a strong and lasting online presence.</p>
-            <a href="pages/contact.html" class="cta-button" id="consultationBtn">Get a Free Consultation →</a>
+    <!-- Hero Section with Typing Effect -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-text">JAYPCDOC HUB UG LTD</h1>
+            <p>We are <span class="typed-text"></span><span class="cursor">&nbsp;</span></p>
+            <p class="hero-description">Your trusted partner in digital innovation and computer solutions</p>
+            <div class="hero-buttons">
+                <a href="contact.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                <a href="services.html" class="btn btn-secondary">Our Services <i class="fas fa-cog"></i></a>
+            </div>
         </div>
-
-        <!-- Our Services -->
-        <h2>🚀 Our Professional Services</h2>
-        <div class="services-grid" id="servicesContainer">
-            <!-- Services will be loaded dynamically via JavaScript -->
+        <div class="hero-stats">
+            <div class="stat-item" data-target="500">
+                <span class="stat-number" id="stat1">0</span>
+                <span class="stat-label">Projects Done</span>
+            </div>
+            <div class="stat-item" data-target="200">
+                <span class="stat-number" id="stat2">0</span>
+                <span class="stat-label">Happy Clients</span>
+            </div>
+            <div class="stat-item" data-target="24">
+                <span class="stat-number" id="stat3">0</span>
+                <span class="stat-label">Support Hours</span>
+            </div>
         </div>
+    </section>
 
-        <!-- Why Choose Us -->
-        <h2>✅ Why Choose JAYPCDOC HUB?</h2>
-        <div class="features-grid" id="featuresContainer">
-            <!-- Features will be loaded dynamically via JavaScript -->
+    <!-- Features Section with Cards -->
+    <section class="features">
+        <h2 class="section-title">Why Choose Us?</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>Fast Delivery</h3>
+                <p>Quick turnaround time for all our services</p>
+                <div class="feature-hover">
+                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Solutions</h3>
+                <p>Your data and systems are always protected</p>
+                <div class="feature-hover">
+                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>We're always here when you need us</p>
+                <div class="feature-hover">
+                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>10+ Years</h3>
+                <p>Years of industry experience</p>
+                <div class="feature-hover">
+                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <!-- Contact Us Section -->
-        <h2>📬 Get In Touch</h2>
-        <div class="contact-info" id="contactSection">
-            <!-- Contact info will be loaded dynamically via JavaScript -->
+    <!-- Services Preview -->
+    <section class="services-preview">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card" onclick="showServiceDetails(1)">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Web Development</h3>
+                <p>Custom websites tailored to your needs</p>
+                <div class="service-progress">
+                    <div class="progress-bar" style="width: 0%" id="progress1"></div>
+                </div>
+            </div>
+            <div class="service-card" onclick="showServiceDetails(2)">
+                <i class="fas fa-tools"></i>
+                <h3>Computer Repair</h3>
+                <p>Fast and reliable repair services</p>
+                <div class="service-progress">
+                    <div class="progress-bar" style="width: 0%" id="progress2"></div>
+                </div>
+            </div>
+            <div class="service-card" onclick="showServiceDetails(3)">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Computer Sales</h3>
+                <p>Quality new and used computers</p>
+                <div class="service-progress">
+                    <div class="progress-bar" style="width: 0%" id="progress3"></div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <!-- Newsletter Signup -->
-        <div class="newsletter-section">
-            <h3>📧 Subscribe to Our Newsletter</h3>
+    <!-- Testimonials Slider -->
+    <section class="testimonials">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial-container" id="testimonialContainer">
+                <div class="testimonial">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Excellent service! They fixed my computer quickly and professionally."</p>
+                    <h4>- John Mukasa</h4>
+                </div>
+                <div class="testimonial">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Best web development team in Kampala. Highly recommended!"</p>
+                    <h4>- Sarah Nabatanzi</h4>
+                </div>
+                <div class="testimonial">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Great prices and even better customer service."</p>
+                    <h4>- Michael Okello</h4>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="slider-btn" onclick="prevTestimonial()"><i class="fas fa-chevron-left"></i></button>
+                <div class="slider-dots" id="sliderDots"></div>
+                <button class="slider-btn" onclick="nextTestimonial()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h3>Subscribe to Our Newsletter</h3>
             <p>Get the latest updates and offers directly in your inbox!</p>
             <form id="newsletterForm" class="newsletter-form">
                 <input type="email" placeholder="Enter your email" required>
-                <button type="submit" class="subscribe-btn">Subscribe</button>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
             </form>
             <div id="newsletterMessage" class="newsletter-message"></div>
         </div>
+    </section>
 
-        <!-- Footer -->
-        <footer>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>JAYPCDOC HUB</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
+                <p><i class="fas fa-phone"></i> +256 704210089</p>
+                <p><i class="fas fa-envelope"></i> plwalanda@outlook.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
             <p>&copy; 2026 JAYPCDOC HUB UG LTD. All Rights Reserved.</p>
-            <p>Designed  by <a href="#">Jowie</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </footer>
-    </div>
+            <p>Designed with <i class="fas fa-heart"></i> by Jowie</p>
+        </div>
+    </footer>
 
-    <!-- JavaScript External File -->
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

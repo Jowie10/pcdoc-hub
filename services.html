@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - JAYPCDOC HUB UG LTD</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="JAYPCDOC HUB Logo" class="logo-img">
+                <span class="logo-text">JAYPCDOC HUB</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>Our Services & Products</h1>
+            <p>Comprehensive digital solutions and quality computer products</p>
+        </div>
+    </section>
+
+    <!-- Product Showcase Section -->
+    <section class="product-showcase">
+        <h2 class="section-title">Shop Our Products</h2>
+        
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-tab active" onclick="filterProducts('all')">All Products</button>
+            <button class="category-tab" onclick="filterProducts('laptops')">Laptops</button>
+            <button class="category-tab" onclick="filterProducts('desktops')">Desktops</button>
+            <button class="category-tab" onclick="filterProducts('accessories')">Accessories</button>
+            <button class="category-tab" onclick="filterProducts('storage')">Storage</button>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Laptops -->
+            <div class="product-card" data-category="laptops">
+                <span class="product-badge new">NEW</span>
+                <img src="https://via.placeholder.com/300x200?text=Dell+XPS+15" alt="Dell XPS 15" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">Dell XPS 15</h3>
+                    <div class="product-specs">Intel i7, 16GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 4,500,000</div>
+                    <span class="product-stock">In Stock (3 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Dell XPS 15')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('dell-xps-15')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="laptops">
+                <img src="https://via.placeholder.com/300x200?text=HP+EliteBook" alt="HP EliteBook" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">HP EliteBook 840</h3>
+                    <div class="product-specs">Intel i5, 8GB RAM, 256GB SSD</div>
+                    <div class="product-price">UGX 2,800,000</div>
+                    <span class="product-stock">In Stock (5 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('HP EliteBook 840')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('hp-elitebook-840')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="laptops">
+                <span class="product-badge sale">SALE</span>
+                <img src="https://via.placeholder.com/300x200?text=Lenovo+ThinkPad" alt="Lenovo ThinkPad" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-title">Lenovo ThinkPad T14</h3>
+                    <div class="product-specs">AMD Ryzen 5, 16GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 3,200,000 <small>UGX 3,800,000</small></div>
+                    <span class="product-stock">In Stock (4 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Lenovo ThinkPad T14')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('lenovo-thinkpad-t14')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktops -->
+            <div class="product-card" data-category="desktops">
+                <img src="https://via.placeholder.com/300x200?text=HP+Pavilion+Desktop" alt="HP Pavilion Desktop" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Desktops</div>
+                    <h3 class="product-title">HP Pavilion Desktop</h3>
+                    <div class="product-specs">Intel i5, 8GB RAM, 1TB HDD + 256GB SSD</div>
+                    <div class="product-price">UGX 2,200,000</div>
+                    <span class="product-stock">In Stock (3 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('HP Pavilion Desktop')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('hp-pavilion-desktop')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="desktops">
+                <img src="https://via.placeholder.com/300x200?text=Dell+OptiPlex" alt="Dell OptiPlex" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Desktops</div>
+                    <h3 class="product-title">Dell OptiPlex 7080</h3>
+                    <div class="product-specs">Intel i7, 16GB RAM, 512GB SSD</div>
+                    <div class="product-price">UGX 3,500,000</div>
+                    <span class="product-stock">In Stock (2 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Dell OptiPlex 7080')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('dell-optiplex-7080')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accessories -->
+            <div class="product-card" data-category="accessories">
+                <img src="https://via.placeholder.com/300x200?text=Logitech+Mouse" alt="Logitech Mouse" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">Logitech Wireless Mouse</h3>
+                    <div class="product-specs">2.4GHz, Silent Click, USB Receiver</div>
+                    <div class="product-price">UGX 45,000</div>
+                    <span class="product-stock">In Stock (20+ units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Logitech Wireless Mouse')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('logitech-mouse')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <span class="product-badge new">NEW</span>
+                <img src="https://via.placeholder.com/300x200?text=Mechanical+Keyboard" alt="Mechanical Keyboard" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">RGB Mechanical Keyboard</h3>
+                    <div class="product-specs">Blue Switches, Backlit, Wired</div>
+                    <div class="product-price">UGX 85,000</div>
+                    <span class="product-stock">In Stock (15 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('RGB Mechanical Keyboard')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('mechanical-keyboard')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage -->
+            <div class="product-card" data-category="storage">
+                <img src="https://via.placeholder.com/300x200?text=Samsung+SSD" alt="Samsung SSD" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">Samsung 870 EVO SSD</h3>
+                    <div class="product-specs">1TB, SATA III, Read: 560MB/s</div>
+                    <div class="product-price">UGX 280,000</div>
+                    <span class="product-stock">In Stock (8 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Samsung 870 EVO SSD')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('samsung-ssd')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="storage">
+                <img src="https://via.placeholder.com/300x200?text=WD+External+HDD" alt="WD External HDD" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">WD 2TB External HDD</h3>
+                    <div class="product-specs">USB 3.0, Portable, Plug-and-Play</div>
+                    <div class="product-price">UGX 320,000</div>
+                    <span class="product-stock">In Stock (12 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('WD 2TB External HDD')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('wd-external-hdd')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="storage">
+                <img src="https://via.placeholder.com/300x200?text=SanDisk+USB" alt="SanDisk USB" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Storage</div>
+                    <h3 class="product-title">SanDisk Ultra USB 3.0</h3>
+                    <div class="product-specs">64GB, 128GB, 256GB Available</div>
+                    <div class="product-price">From UGX 35,000</div>
+                    <span class="product-stock low">Limited Stock</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('SanDisk Ultra USB')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('sandisk-usb')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Accessories -->
+            <div class="product-card" data-category="accessories">
+                <img src="https://via.placeholder.com/300x200?text=Headset" alt="Gaming Headset" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">Gaming Headset</h3>
+                    <div class="product-specs">7.1 Surround Sound, RGB, Noise-Cancelling</div>
+                    <div class="product-price">UGX 120,000</div>
+                    <span class="product-stock">In Stock (6 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Gaming Headset')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('gaming-headset')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <img src="https://via.placeholder.com/300x200?text=Laptop+Stand" alt="Laptop Stand" class="product-image" onerror="this.src='logo.png'">
+                <div class="product-details">
+                    <div class="product-category">Accessories</div>
+                    <h3 class="product-title">Adjustable Laptop Stand</h3>
+                    <div class="product-specs">Aluminum, Foldable, Ergonomic</div>
+                    <div class="product-price">UGX 65,000</div>
+                    <span class="product-stock">In Stock (10 units)</span>
+                    <div class="product-actions">
+                        <button class="btn-add-to-cart" onclick="addToCart('Laptop Stand')"><i class="fas fa-shopping-cart"></i> Inquire</button>
+                        <button class="btn-quick-view" onclick="quickView('laptop-stand')"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View All Products Button -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <p class="contact-info" style="font-size: 1.1rem; color: var(--text-color);">
+                <i class="fas fa-info-circle" style="color: var(--primary-color);"></i> 
+                For more products and bulk orders, please <a href="contact.html" style="color: var(--primary-color); font-weight: 600;">contact us</a> directly
+            </p>
+        </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal" id="quickViewModal">
+        <span class="close-modal" onclick="closeQuickView()">&times;</span>
+        <div class="modal-content" id="modalContent">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section class="services-full">
+        <div class="services-container">
+            <div class="services-grid-detailed">
+                
+                <!-- Web Development Services -->
+                <div class="service-category" id="web-development">
+                    <h2 class="category-title"><i class="fas fa-laptop-code"></i> Web Development</h2>
+                    <div class="service-items">
+                        <div class="service-item">
+                            <i class="fas fa-globe"></i>
+                            <div class="service-info">
+                                <h3>Custom Website Design</h3>
+                                <p>Tailored, responsive websites that reflect your brand identity and engage your audience. We create stunning websites that work perfectly on all devices.</p>
+                                <span class="service-price">Starting at $500</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <div class="service-info">
+                                <h3>E-Commerce Solutions</h3>
+                                <p>Full-featured online stores with secure payment integration, inventory management, and user-friendly interfaces to help you sell products online effectively.</p>
+                                <span class="service-price">Starting at $1,200</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-cogs"></i>
+                            <div class="service-info">
+                                <h3>Web Application Development</h3>
+                                <p>Custom web applications to streamline your business processes, automate workflows, and improve operational efficiency with scalable solutions.</p>
+                                <span class="service-price">Contact for quote</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-search"></i>
+                            <div class="service-info">
+                                <h3>SEO & Digital Marketing</h3>
+                                <p>Improve your visibility and drive organic traffic to your website with our comprehensive SEO strategies and digital marketing campaigns.</p>
+                                <span class="service-price">Starting at $300/month</span>
+                            </div>
+                        </div>
+
+                        <div class="service-item">
+                            <i class="fas fa-code"></i>
+                            <div class="service-info">
+                                <h3>Website Maintenance</h3>
+                                <p>Regular updates, security patches, content management, and technical support to keep your website running smoothly and securely.</p>
+                                <span class="service-price">Starting at $150/month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Computer Services -->
+                <div class="service-category" id="computer-services">
+                    <h2 class="category-title"><i class="fas fa-tools"></i> Computer Services</h2>
+                    <div class="service-items">
+                        <div class="service-item">
+                            <i class="fas fa-desktop"></i>
+                            <div class="service-info">
+                                <h3>Computer Repair & Maintenance</h3>
+                                <p>Professional diagnostic, repair, and preventive maintenance services for desktops, laptops, and workstations. Fast turnaround and quality service guaranteed.</p>
+                                <span class="service-price">Starting at $50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-laptop"></i>
+                            <div class="service-info">
+                                <h3>Computer Sales</h3>
+                                <p>High-quality new and refurbished computers, laptops, and accessories at competitive prices. All systems come with warranty and after-sales support.</p>
+                                <span class="service-price">Varies by model</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-hdd"></i>
+                            <div class="service-info">
+                                <h3>Data Recovery</h3>
+                                <p>Professional data recovery services for hard drives, SSDs, USB drives, and other storage devices. Recover lost or deleted files quickly and safely.</p>
+                                <span class="service-price">Starting at $100</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="service-info">
+                                <h3>Virus & Malware Removal</h3>
+                                <p>Complete system cleanup and protection against viruses, malware, spyware, and ransomware. We'll secure your system and prevent future infections.</p>
+                                <span class="service-price">Starting at $40</span>
+                            </div>
+                        </div>
+
+                        <div class="service-item">
+                            <i class="fas fa-print"></i>
+                            <div class="service-info">
+                                <h3>Printer & Peripheral Support</h3>
+                                <p>Installation, configuration, and repair services for printers, scanners, and other peripherals. Get your devices working seamlessly with your systems.</p>
+                                <span class="service-price">Starting at $30</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- IT Consulting -->
+                <div class="service-category" id="it-consulting">
+                    <h2 class="category-title"><i class="fas fa-chart-line"></i> IT Consulting</h2>
+                    <div class="service-items">
+                        <div class="service-item">
+                            <i class="fas fa-network-wired"></i>
+                            <div class="service-info">
+                                <h3>Network Setup & Security</h3>
+                                <p>Professional design, implementation, and security hardening of business networks. We ensure reliable connectivity and protection against cyber threats.</p>
+                                <span class="service-price">Contact for quote</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-cloud"></i>
+                            <div class="service-info">
+                                <h3>Cloud Services</h3>
+                                <p>Cloud migration, setup, and management services for businesses of all sizes. Leverage the power of cloud computing for scalability and efficiency.</p>
+                                <span class="service-price">Starting at $200/month</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-headset"></i>
+                            <div class="service-info">
+                                <h3>IT Support & Maintenance</h3>
+                                <p>Ongoing technical support and system maintenance for your business. Our team is available to resolve issues quickly and minimize downtime.</p>
+                                <span class="service-price">Starting at $150/month</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div class="service-info">
+                                <h3>IT Training</h3>
+                                <p>Professional training in computer skills, software applications, and IT best practices. Empower your team with the knowledge they need to succeed.</p>
+                                <span class="service-price">Contact for rates</span>
+                            </div>
+                        </div>
+
+                        <div class="service-item">
+                            <i class="fas fa-database"></i>
+                            <div class="service-info">
+                                <h3>Backup & Disaster Recovery</h3>
+                                <p>Comprehensive backup solutions and disaster recovery planning to protect your critical business data and ensure business continuity.</p>
+                                <span class="service-price">Starting at $100/month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Why Choose Us Section -->
+            <div class="why-choose-us">
+                <h2 class="section-title">Why Choose JAYPCDOC HUB?</h2>
+                <div class="why-grid">
+                    <div class="why-item">
+                        <i class="fas fa-clock"></i>
+                        <h4>24/7 Support</h4>
+                        <p>Round-the-clock technical support for all your IT needs</p>
+                    </div>
+                    <div class="why-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Certified Experts</h4>
+                        <p>Highly trained and certified professionals</p>
+                    </div>
+                    <div class="why-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>100% Satisfaction</h4>
+                        <p>Guaranteed quality service and customer satisfaction</p>
+                    </div>
+                    <div class="why-item">
+                        <i class="fas fa-bolt"></i>
+                        <h4>Fast Turnaround</h4>
+                        <p>Quick response and efficient service delivery</p>
+                    </div>
+                    <div class="why-item">
+                        <i class="fas fa-tag"></i>
+                        <h4>Best Prices</h4>
+                        <p>Competitive pricing on all products and services</p>
+                    </div>
+                    <div class="why-item">
+                        <i class="fas fa-wrench"></i>
+                        <h4>Warranty</h4>
+                        <p>All products come with warranty coverage</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="services-cta">
+                <h3>Ready to Get Started?</h3>
+                <p>Contact us today for a free consultation and personalized quote tailored to your specific requirements. Let's discuss how we can help your business grow!</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
+                    <a href="tel:+256704210089" class="btn btn-secondary"><i class="fas fa-phone"></i> Call Us Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>JAYPCDOC HUB</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
+                <p><i class="fas fa-phone"></i> +256 704210089</p>
+                <p><i class="fas fa-phone"></i> +256 779832156</p>
+                <p><i class="fas fa-envelope"></i> plwalanda@outlook.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Our Products</h4>
+                <ul>
+                    <li><a href="#" onclick="filterProducts('laptops'); return false;">Laptops</a></li>
+                    <li><a href="#" onclick="filterProducts('desktops'); return false;">Desktops</a></li>
+                    <li><a href="#" onclick="filterProducts('accessories'); return false;">Accessories</a></li>
+                    <li><a href="#" onclick="filterProducts('storage'); return false;">Storage</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 JAYPCDOC HUB UG LTD. All Rights Reserved.</p>
+            <p>Designed with <i class="fas fa-heart"></i> by Jowie</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

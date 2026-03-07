@@ -4,55 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - JAYPCDOC HUB</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <!-- Correct path for stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header-section">
-            <div class="logo-area">
-                <img src="../images/screenshot-7.png" alt="JAYPCDOC HUB UG LTD Logo" width="80" height="80">
-                <h1>JAYPCDOC HUB <span class="light-text">UG LTD</span></h1>
-            </div>
-            <p class="tagline">Your Partner in Digital Innovation</p>
-        </div>
-
-        <!-- Navigation -->
-        <nav class="main-nav">
-            <a href="../index.html">🏠 Home</a>
-            <a href="about.html" class="active">📖 About Us</a>
-            <a href="services.html">⚙️ Services</a>
-            <a href="contact.html">📞 Contact</a>
-        </nav>
-
-        <!-- About Content -->
-        <h2>📖 About Us</h2>
-        <div class="about-content">
-            <p>Welcome to JAYPCDOC HUB UG LTD, your trusted partner in digital innovation since 2020. We are a passionate team of tech enthusiasts dedicated to helping businesses establish and maintain a strong online presence.</p>
-            
-            <h3>Our Mission</h3>
-            <p>To deliver end-to-end website solutions from design and development to management and repair that help our clients build a strong and lasting online presence.</p>
-            
-            <h3>Our Vision</h3>
-            <p>To become the leading provider of comprehensive digital solutions in Uganda and beyond, known for our reliability, expertise, and customer-centric approach.</p>
-            
-            <h3>Why Choose Us?</h3>
-            <ul style="margin-left: 20px; margin-bottom: 20px;">
-                <li>Experienced and certified technicians</li>
-                <li>Affordable and transparent pricing</li>
-                <li>Quick turnaround times</li>
-                <li>Excellent customer support</li>
-                <li>Tailored solutions for your specific needs</li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2025 JAYPCDOC HUB UG LTD. All Rights Reserved.</p>
-            <p>Designed with ❤️ by <a href="#">Jowie</a></p>
-        </footer>
+    <!-- Loading Spinner -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
     </div>
 
-    <script src="../js/script.js"></script>
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header (same as index.html) -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="Logo" class="logo-image">
+                <span class="logo-text">JAYPCDOC HUB</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>About Us</h1>
+            <p>Get to know JAYPCDOC HUB UG LTD</p>
+        </div>
+    </section>
+
+   <!-- About Section -->
+<section class="about-section">
+    <div class="about-container">
+        <div class="about-image">
+            <img src="logo.png" alt="JAYPCDOC HUB UG LTD - Professional Digital Solutions in Kampala">
+        </div>
+        <div class="about-content">
+            <h2>Who We Are</h2>
+            <p>JAYPCDOC HUB UG LTD is a premier digital solutions provider headquartered in Kampala, Uganda. With a passion for innovation and a commitment to excellence, we empower businesses across East Africa to establish, grow, and maintain a commanding online presence. Our team of seasoned professionals combines technical expertise with creative vision to deliver results that exceed expectations.</p>
+            
+            <h2>Our Mission</h2>
+            <p>To provide comprehensive, end-to-end digital solutions that transform how businesses operate online. From strategic website design and development to ongoing management, maintenance, and technical support, we ensure our clients have the robust digital infrastructure needed to thrive in today's competitive landscape.</p>
+            
+            <h2>Our Vision</h2>
+            <p>To become East Africa's most trusted and sought-after digital solutions partner, recognized globally for our unwavering commitment to excellence, innovative approach, and exceptional customer satisfaction. We aspire to bridge the digital divide and empower businesses of all sizes to harness the full potential of technology.</p>
+            
+            <h2>Our Values</h2>
+            <ul class="values-list">
+                <li><i class="fas fa-check-circle"></i> <strong>Excellence:</strong> We never settle for less than the best</li>
+                <li><i class="fas fa-check-circle"></i> <strong>Innovation:</strong> We embrace cutting-edge technologies</li>
+                <li><i class="fas fa-check-circle"></i> <strong>Integrity:</strong> We build trust through transparency</li>
+                <li><i class="fas fa-check-circle"></i> <strong>Customer-Centric:</strong> Your success is our success</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2 class="section-title">Meet Our Team</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-image">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>Lwalanda JohnPaul</h3>
+                <p>Founder & CEO</p>
+                <div class="team-social">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-image">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>Fortune </h3>
+                <p>Lead Developer</p>
+                <div class="team-social">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (same as index.html) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>JAYPCDOC HUB</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
+                <p><i class="fas fa-phone"></i> +256 704210089</p>
+                <p><i class="fas fa-envelope"></i> plwalanda@outlook.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 JAYPCDOC HUB UG LTD. All Rights Reserved.</p>
+            <p>Designed with <i class="fas fa-heart"></i> by Jowie</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
 </body>
 </html>
