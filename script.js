@@ -1152,4 +1152,29 @@ if (!document.querySelector('#dynamic-styles')) {
         }
     `;
     document.head.appendChild(style);
+
 }
+
+// ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all links that have hash links (like #services, #contact)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return; // Skip empty links
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Update URL without jumping
+                history.pushState(null, null, targetId);
+            }
+        });
+    });
+});
