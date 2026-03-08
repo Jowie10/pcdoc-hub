@@ -12,17 +12,58 @@
             box-sizing: border-box;
         }
 
+        /* ===== NEW COLOR SCHEME ===== */
         :root {
-            --primary: #c0392b;
-            --secondary: #2c3e50;
+            --primary-blue: #0E76B8;      /* Main theme, buttons, headers */
+            --dark-blue: #2B719A;          /* Hover states, navbars */
+            --orange: #E05129;              /* Highlights, call-to-action buttons */
+            --light-blue: #9DC6D8;          /* Background sections */
+            
+            /* Keep existing variable names for compatibility */
+            --primary: var(--primary-blue);
+            --secondary: var(--dark-blue);
+            --accent: var(--orange);
+            
             --light: #f8f9fa;
             --dark: #333;
+            --bg-color: #ffffff;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --footer-bg: var(--dark-blue);
+            --shadow: 0 5px 15px rgba(14, 118, 184, 0.15);
+            --border-color: #eee;
+            --specs-bg: #f5f5f5;
+            --specs-text: #333;
+        }
+
+        body.dark-mode {
+            --primary-blue: #0E76B8;
+            --dark-blue: #1e4f6e;
+            --orange: #E05129;
+            --light-blue: #2c3e50;
+            --primary: var(--primary-blue);
+            --secondary: var(--dark-blue);
+            --accent: var(--orange);
+            --light: #2c3e50;
+            --dark: #ecf0f1;
+            --bg-color: #1a1a1a;
+            --text-color: #ecf0f1;
+            --card-bg: #2c2c2c;
+            --footer-bg: #1e1e1e;
+            --shadow: 0 5px 15px rgba(0,0,0,0.5);
+            --border-color: #444;
+            --specs-bg: #3a3a3a;
+            --specs-text: #ecf0f1;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: var(--dark);
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Loader */
@@ -32,7 +73,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
+            background: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -48,8 +89,8 @@
         .loader {
             width: 50px;
             height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top-color: var(--primary);
+            border: 5px solid var(--light-blue);
+            border-top-color: var(--primary-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -64,7 +105,7 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary), #e74c3c);
+            background: linear-gradient(90deg, var(--primary-blue), var(--orange));
             z-index: 1000;
             transition: width 0.3s;
         }
@@ -78,15 +119,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 5%;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
             z-index: 100;
             transition: all 0.3s;
         }
 
         .navbar.scrolled {
             padding: 0.5rem 5%;
-            background: rgba(255,255,255,0.95);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
         }
 
@@ -105,7 +146,7 @@
         .logo-text {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--primary-blue);
         }
 
         .nav-menu {
@@ -116,7 +157,7 @@
 
         .nav-menu a {
             text-decoration: none;
-            color: var(--dark);
+            color: var(--text-color);
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
@@ -129,7 +170,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--primary);
+            background: var(--primary-blue);
             transition: width 0.3s;
         }
 
@@ -139,7 +180,7 @@
         }
 
         .nav-menu a.active {
-            color: var(--primary);
+            color: var(--primary-blue);
         }
 
         .hamburger {
@@ -152,13 +193,13 @@
             width: 25px;
             height: 3px;
             margin: 5px 0;
-            background: var(--dark);
+            background: var(--text-color);
             transition: all 0.3s;
         }
 
         /* Page Header */
         .page-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
             color: white;
             padding: 8rem 5% 4rem;
             text-align: center;
@@ -179,7 +220,7 @@
             text-align: center;
             font-size: 2.5rem;
             margin: 3rem 0;
-            color: var(--dark);
+            color: var(--text-color);
             position: relative;
         }
 
@@ -191,7 +232,7 @@
             transform: translateX(-50%);
             width: 100px;
             height: 3px;
-            background: var(--primary);
+            background: var(--primary-blue);
         }
 
         /* Category Tabs */
@@ -205,10 +246,10 @@
 
         .category-tab {
             padding: 0.8rem 2rem;
-            background: white;
-            border: 2px solid var(--primary);
+            background: var(--card-bg);
+            border: 2px solid var(--primary-blue);
             border-radius: 30px;
-            color: var(--primary);
+            color: var(--primary-blue);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -217,10 +258,10 @@
 
         .category-tab:hover,
         .category-tab.active {
-            background: var(--primary);
+            background: var(--primary-blue);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(192,57,43,0.3);
+            box-shadow: 0 5px 15px rgba(14, 118, 184, 0.3);
         }
 
         /* Products Grid */
@@ -234,18 +275,18 @@
         }
 
         .product-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             transition: all 0.3s;
             position: relative;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
 
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(192,57,43,0.2);
+            box-shadow: 0 10px 30px rgba(14, 118, 184, 0.2);
         }
 
         .product-badge {
@@ -265,7 +306,7 @@
         }
 
         .product-badge.sale {
-            background: #e67e22;
+            background: var(--orange);
         }
 
         .product-image {
@@ -273,6 +314,7 @@
             height: 220px;
             object-fit: cover;
             transition: transform 0.5s;
+            background: var(--light-blue);
         }
 
         .product-card:hover .product-image {
@@ -284,7 +326,7 @@
         }
 
         .product-category {
-            color: var(--primary);
+            color: var(--primary-blue);
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -295,7 +337,7 @@
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--dark);
+            color: var(--text-color);
         }
 
         .product-specs {
@@ -305,10 +347,14 @@
             line-height: 1.4;
         }
 
+        body.dark-mode .product-specs {
+            color: #aaa;
+        }
+
         .product-price {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary-blue);
             margin-bottom: 0.5rem;
         }
 
@@ -352,21 +398,30 @@
 
         .btn-add-to-cart {
             flex: 1;
-            background: var(--primary);
+            background: var(--primary-blue);
             color: white;
         }
 
         .btn-add-to-cart:hover {
-            background: #a93226;
+            background: var(--dark-blue);
         }
 
         .btn-quick-view {
-            background: var(--light);
+            background: var(--light-blue);
             color: var(--dark);
         }
 
         .btn-quick-view:hover {
-            background: #e9ecef;
+            background: #8bb5c9;
+        }
+
+        body.dark-mode .btn-quick-view {
+            background: #3a3a3a;
+            color: white;
+        }
+
+        body.dark-mode .btn-quick-view:hover {
+            background: #4a4a4a;
         }
 
         /* Quick View Modal */
@@ -388,7 +443,7 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--card-bg);
             max-width: 900px;
             width: 90%;
             max-height: 90vh;
@@ -420,7 +475,7 @@
         }
 
         .close-modal:hover {
-            color: var(--dark);
+            color: var(--primary-blue);
         }
 
         .modal-grid {
@@ -435,9 +490,81 @@
             border-radius: 10px;
         }
 
+        body.dark-mode .modal-details {
+            color: var(--text-color);
+        }
+
+        body.dark-mode .modal-details p {
+            color: #aaa;
+        }
+
+        body.dark-mode .modal-details div[style*="background:var(--specs-bg)"] {
+            background: var(--specs-bg) !important;
+            color: var(--specs-text);
+        }
+
+        body.dark-mode .modal-details h4 {
+            color: var(--text-color) !important;
+        }
+
+        /* Dark Mode Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            z-index: 99;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--dark-blue);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 99;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background: #128C7E;
+        }
+
+        .whatsapp-float i {
+            color: white;
+        }
+
         /* Footer */
         footer {
-            background: var(--secondary);
+            background: var(--footer-bg);
             color: white;
             padding: 3rem 5% 1rem;
             margin-top: 4rem;
@@ -463,7 +590,7 @@
             left: 0;
             width: 50px;
             height: 2px;
-            background: var(--primary);
+            background: var(--primary-blue);
         }
 
         .footer-section p {
@@ -488,7 +615,7 @@
         }
 
         .footer-section ul li a:hover {
-            color: var(--primary);
+            color: var(--primary-blue);
             padding-left: 5px;
         }
 
@@ -511,7 +638,7 @@
         }
 
         .social-links a:hover {
-            background: var(--primary);
+            background: var(--primary-blue);
             transform: translateY(-3px);
         }
 
@@ -522,14 +649,18 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
+        .footer-bottom i {
+            color: var(--primary-blue);
+        }
+
         /* Back to Top */
         .back-to-top {
             position: fixed;
-            bottom: 30px;
+            bottom: 170px;
             right: 30px;
             width: 50px;
             height: 50px;
-            background: var(--primary);
+            background: var(--primary-blue);
             color: white;
             border: none;
             border-radius: 50%;
@@ -544,7 +675,7 @@
         }
 
         .back-to-top:hover {
-            background: var(--secondary);
+            background: var(--dark-blue);
             transform: translateY(-5px);
         }
 
@@ -575,11 +706,11 @@
                 left: -100%;
                 top: 70px;
                 flex-direction: column;
-                background: white;
+                background: var(--card-bg);
                 width: 100%;
                 text-align: center;
                 transition: 0.3s;
-                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                box-shadow: var(--shadow);
                 padding: 2rem 0;
                 z-index: 99;
             }
@@ -613,6 +744,28 @@
             .page-header h1 {
                 font-size: 2rem;
             }
+
+            .theme-toggle {
+                bottom: 100px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .whatsapp-float {
+                bottom: 30px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .back-to-top {
+                bottom: 160px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
         }
     </style>
 </head>
@@ -626,26 +779,25 @@
     <div class="progress-bar" id="progressBar"></div>
 
     <!-- Header -->
-  <!-- Header -->
-<header>
-    <nav class="navbar">
-        <div class="logo">
-            <img src="logo.png" alt="PCDOC HUB Logo" class="logo-img">
-            <span class="logo-text">PCDOC HUB</span>
-        </div>
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html" class="active">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <div class="hamburger" id="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
-</header>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="PCDOC HUB Logo" class="logo-img">
+                <span class="logo-text">PCDOC HUB</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -666,7 +818,6 @@
             <button class="category-tab" onclick="filterProducts('desktops')">Desktops</button>
             <button class="category-tab" onclick="filterProducts('accessories')">Accessories</button>
             <button class="category-tab" onclick="filterProducts('storage')">Storage</button>
-        
         </div>
 
         <!-- Products Grid -->
@@ -918,7 +1069,7 @@
                 </div>
             </div>
 
-            <!-- USB Drive - THIS IS THE LAST ITEM AND WILL SHOW -->
+            <!-- USB Drive -->
             <div class="product-card" data-category="storage">
                 <img src="https://images.unsplash.com/photo-1605648916362-1a7f1596c83f?w=400" alt="USB Drive" class="product-image">
                 <div class="product-details">
@@ -941,6 +1092,19 @@
         <span class="close-modal" onclick="closeQuickView()">&times;</span>
         <div class="modal-content" id="modalContent"></div>
     </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/256704210089?text=Hello%20PCDOC%20HUB%2C%20I'm%20interested%20in%20your%20products" 
+       class="whatsapp-float" 
+       target="_blank"
+       title="Chat with us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <!-- Footer -->
     <footer>
@@ -991,6 +1155,7 @@
             initScrollProgress();
             initBackToTop();
             initProductFilters();
+            initDarkMode(); // Initialize dark mode
         });
 
         // Loader
@@ -1103,6 +1268,44 @@
             if (document.querySelectorAll('.category-tab').length > 0) {
                 filterProducts('all');
             }
+        }
+
+        // Dark Mode Function
+        function initDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+            
+            const icon = themeToggle.querySelector('i');
+            
+            // Check for saved preference
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                
+                // Update icon
+                if (icon) {
+                    if (isDark) {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    } else {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    }
+                }
+                
+                // Save preference
+                localStorage.setItem('darkMode', isDark);
+                console.log('Dark mode:', isDark ? 'ON' : 'OFF');
+            });
         }
 
         // Quick View
@@ -1242,20 +1445,20 @@
                         <img src="${product.img}" alt="${product.title}">
                     </div>
                     <div class="modal-details">
-                        <h2 style="color:#c0392b; margin-top:0;">${product.title}</h2>
-                        <div style="font-size:1.8rem; font-weight:bold; color:#c0392b; margin:1rem 0;">${product.price}</div>
+                        <h2 style="color:var(--primary-blue); margin-top:0;">${product.title}</h2>
+                        <div style="font-size:1.8rem; font-weight:bold; color:var(--primary-blue); margin:1rem 0;">${product.price}</div>
                         <p style="margin:1rem 0; line-height:1.6;">${product.desc}</p>
-                        <div style="background:#f5f5f5; padding:1.5rem; border-radius:8px; margin:1.5rem 0;">
-                            <h4 style="margin-top:0; margin-bottom:1rem;">Key Specifications:</h4>
+                        <div style="background:var(--specs-bg); padding:1.5rem; border-radius:8px; margin:1.5rem 0;">
+                            <h4 style="margin-top:0; margin-bottom:1rem; color:var(--text-color);">Key Specifications:</h4>
                             <ul style="list-style:none; padding:0; margin:0;">
-                                ${product.specs.map(spec => `<li style="margin:0.8rem 0;"><i class="fas fa-check-circle" style="color:#c0392b; margin-right:0.8rem;"></i>${spec}</li>`).join('')}
+                                ${product.specs.map(spec => `<li style="margin:0.8rem 0; color:var(--text-color);"><i class="fas fa-check-circle" style="color:var(--primary-blue); margin-right:0.8rem;"></i>${spec}</li>`).join('')}
                             </ul>
                         </div>
                         <div style="display:flex; gap:1rem;">
-                            <button onclick="addToCart('${product.title}')" style="flex:1; padding:1rem; background:#c0392b; color:white; border:none; border-radius:5px; cursor:pointer;">
+                            <button onclick="addToCart('${product.title}')" style="flex:1; padding:1rem; background:var(--primary-blue); color:white; border:none; border-radius:5px; cursor:pointer;">
                                 <i class="fas fa-shopping-cart"></i> Inquire Now
                             </button>
-                            <button onclick="window.location.href='contact.html'" style="flex:1; padding:1rem; background:#2c3e50; color:white; border:none; border-radius:5px; cursor:pointer;">
+                            <button onclick="window.location.href='contact.html'" style="flex:1; padding:1rem; background:var(--dark-blue); color:white; border:none; border-radius:5px; cursor:pointer;">
                                 <i class="fas fa-envelope"></i> Contact Us
                             </button>
                         </div>

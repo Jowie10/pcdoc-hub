@@ -1,5 +1,7 @@
 // Wait for DOM to load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded - initializing features');
+    
     // Initialize all features
     initLoader();
     initNavigation();
@@ -12,11 +14,29 @@ document.addEventListener('DOMContentLoaded', function() {
     initServiceCards();
     initScrollAnimations();
     initParticles();
+    initProductFilters();
+    initDarkMode(); // Add dark mode initialization
+    
+    // Add smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 });
 
 // ===== LOADER =====
 function initLoader() {
     const loader = document.getElementById('loader');
+    if (!loader) return;
+    
     window.addEventListener('load', () => {
         setTimeout(() => {
             loader.classList.add('fade-out');
@@ -29,14 +49,14 @@ function initNavigation() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
     const navbar = document.querySelector('.navbar');
+    
+    if (!hamburger || !navMenu || !navbar) return;
 
     // Mobile menu toggle
-    if (hamburger) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-    }
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
 
     // Close menu when clicking a link
     document.querySelectorAll('.nav-menu a').forEach(link => {
@@ -69,7 +89,7 @@ function initTypingEffect() {
     const typedTextSpan = document.querySelector('.typed-text');
     const cursorSpan = document.querySelector('.cursor');
     
-    if (!typedTextSpan) return;
+    if (!typedTextSpan || !cursorSpan) return;
 
     const words = ['Web Developers', 'Computer Experts', 'Digital Innovators', 'IT Consultants', 'Your Tech Partners'];
     let wordIndex = 0;
@@ -113,6 +133,7 @@ function initTypingEffect() {
 // ===== SCROLL PROGRESS BAR =====
 function initScrollProgress() {
     const progressBar = document.getElementById('progressBar');
+    if (!progressBar) return;
     
     window.addEventListener('scroll', () => {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -129,7 +150,10 @@ function initStatsCounter() {
 
     function animateStats() {
         statNumbers.forEach(stat => {
-            const target = parseInt(stat.closest('.stat-item').getAttribute('data-target'));
+            const statItem = stat.closest('.stat-item');
+            if (!statItem) return;
+            
+            const target = parseInt(statItem.getAttribute('data-target'));
             let current = 0;
             const increment = target / 50;
             
@@ -168,6 +192,7 @@ function initStatsCounter() {
 // ===== BACK TO TOP BUTTON =====
 function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
+    if (!backToTop) return;
     
     window.addEventListener('scroll', () => {
         if (window.scrollY > 500) {
@@ -187,22 +212,37 @@ function initBackToTop() {
 
 // ===== TESTIMONIAL SLIDER =====
 let currentSlide = 0;
-const testimonials = document.querySelectorAll('.testimonial');
-const totalSlides = testimonials.length;
+let testimonials = [];
+let totalSlides = 0;
+let autoSlideInterval;
 
 function initTestimonialSlider() {
+    testimonials = document.querySelectorAll('.testimonial');
     const container = document.getElementById('testimonialContainer');
     const dotsContainer = document.getElementById('sliderDots');
     
-    if (!container || totalSlides === 0) return;
+    if (!container || testimonials.length === 0) return;
+    
+    totalSlides = testimonials.length;
 
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('span');
-        dot.classList.add('dot');
-        dot.setAttribute('onclick', `goToSlide(${i})`);
-        dotsContainer.appendChild(dot);
+    // Clear existing dots
+    if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.setAttribute('onclick', `goToSlide(${i})`);
+            dotsContainer.appendChild(dot);
+        }
     }
+
+    // Set container width
+    container.style.width = `${totalSlides * 100}%`;
+    testimonials.forEach(testimonial => {
+        testimonial.style.width = `${100 / totalSlides}%`;
+    });
 
     updateSlider();
     startAutoSlide();
@@ -214,7 +254,7 @@ function updateSlider() {
     
     if (!container) return;
 
-    container.style.transform = `translateX(-${currentSlide * 100}%)`;
+    container.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
     
     dots.forEach((dot, index) => {
         if (index === currentSlide) {
@@ -228,22 +268,33 @@ function updateSlider() {
 function nextTestimonial() {
     currentSlide = (currentSlide + 1) % totalSlides;
     updateSlider();
+    resetAutoSlide();
 }
 
 function prevTestimonial() {
     currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     updateSlider();
+    resetAutoSlide();
 }
 
 function goToSlide(index) {
     currentSlide = index;
     updateSlider();
+    resetAutoSlide();
 }
 
 function startAutoSlide() {
-    setInterval(() => {
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+    }
+    autoSlideInterval = setInterval(() => {
         nextTestimonial();
-    }, 5000);
+    }, 8000);
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
 }
 
 // ===== NEWSLETTER FORM =====
@@ -251,30 +302,31 @@ function initNewsletterForm() {
     const form = document.getElementById('newsletterForm');
     const messageDiv = document.getElementById('newsletterMessage');
     
-    if (!form) return;
+    if (!form || !messageDiv) return;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const email = form.querySelector('input[type="email"]').value;
+        const emailInput = form.querySelector('input[type="email"]');
+        if (!emailInput) return;
+        
+        const email = emailInput.value;
         const button = form.querySelector('button');
         const originalText = button.textContent;
 
-        // Show loading state
         button.textContent = 'Subscribing...';
         button.disabled = true;
 
-        // Simulate API call
         try {
             await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Validate email
             if (isValidEmail(email)) {
                 showMessage('Thank you for subscribing! Check your email for confirmation.', 'success');
                 form.reset();
                 
-                // Track subscription
-                trackUserAction('newsletter_subscription', { email });
+                if (typeof trackUserAction === 'function') {
+                    trackUserAction('newsletter_subscription', { email });
+                }
             } else {
                 throw new Error('Invalid email address');
             }
@@ -294,8 +346,11 @@ function isValidEmail(email) {
 
 function showMessage(message, type) {
     const messageDiv = document.getElementById('newsletterMessage');
+    if (!messageDiv) return;
+    
     messageDiv.textContent = message;
     messageDiv.className = `newsletter-message ${type}`;
+    messageDiv.style.display = 'block';
     
     setTimeout(() => {
         messageDiv.style.display = 'none';
@@ -308,11 +363,10 @@ function initServiceCards() {
     const serviceCards = document.querySelectorAll('.service-card');
     
     serviceCards.forEach((card, index) => {
-        // Progress bar animation on hover
         card.addEventListener('mouseenter', () => {
             const progressBar = card.querySelector('.progress-bar');
             if (progressBar) {
-                const percentage = [85, 95, 90][index]; // Different percentages for each service
+                const percentage = [85, 95, 90][index];
                 progressBar.style.width = percentage + '%';
             }
         });
@@ -324,7 +378,6 @@ function initServiceCards() {
             }
         });
 
-        // Click handler
         card.addEventListener('click', () => {
             showServiceDetails(index + 1);
         });
@@ -354,8 +407,8 @@ function showServiceDetails(serviceId) {
     };
 
     const service = serviceDetails[serviceId];
+    if (!service) return;
     
-    // Create modal
     const modal = document.createElement('div');
     modal.className = 'service-modal';
     modal.innerHTML = `
@@ -375,12 +428,10 @@ function showServiceDetails(serviceId) {
 
     document.body.appendChild(modal);
 
-    // Show modal
     setTimeout(() => {
         modal.classList.add('show');
     }, 10);
 
-    // Close modal
     const closeBtn = modal.querySelector('.close-modal');
     closeBtn.addEventListener('click', () => {
         modal.classList.remove('show');
@@ -389,7 +440,6 @@ function showServiceDetails(serviceId) {
         }, 300);
     });
 
-    // Close on outside click
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('show');
@@ -433,124 +483,34 @@ function initParticles() {
     }
 }
 
-// Add particle styles dynamically
-const style = document.createElement('style');
-style.textContent = `
-    .particle {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: rgba(255,255,255,0.5);
-        border-radius: 50%;
-        animation: floatParticle linear infinite;
-        pointer-events: none;
-    }
-
-    @keyframes floatParticle {
-        0% {
-            transform: translateY(100vh) scale(0);
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100px) scale(1);
-            opacity: 0;
-        }
-    }
-
-    .service-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .service-modal.show {
-        opacity: 1;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 2rem;
-        border-radius: 10px;
-        max-width: 500px;
-        width: 90%;
-        position: relative;
-        transform: scale(0.7);
-        transition: transform 0.3s ease;
-    }
-
-    .service-modal.show .modal-content {
-        transform: scale(1);
-    }
-
-    .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #999;
-        transition: color 0.3s ease;
-    }
-
-    .close-modal:hover {
-        color: #333;
-    }
-
-    .service-info {
-        margin: 1rem 0;
-        padding: 1rem;
-        background: #f9f9f9;
-        border-radius: 5px;
-    }
-`;
-
-document.head.appendChild(style);
-
-// ===== USER TRACKING (Analytics) =====
+// ===== USER TRACKING =====
 function trackUserAction(action, data = {}) {
-    // This would send to your analytics service
     console.log('User Action:', action, data);
     
-    // Store in localStorage for session tracking
-    const sessionData = JSON.parse(localStorage.getItem('userSession') || '{}');
-    sessionData[action] = {
-        timestamp: new Date().toISOString(),
-        data: data
-    };
-    localStorage.setItem('userSession', JSON.stringify(sessionData));
+    try {
+        const sessionData = JSON.parse(localStorage.getItem('userSession') || '{}');
+        sessionData[action] = {
+            timestamp: new Date().toISOString(),
+            data: data
+        };
+        localStorage.setItem('userSession', JSON.stringify(sessionData));
+    } catch (e) {
+        console.error('Error tracking user action:', e);
+    }
 }
 
 // ===== PAGE VISIBILITY API =====
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         console.log('User left the page');
-        // Pause animations or videos
     } else {
         console.log('User returned to the page');
-        // Resume animations
     }
 });
 
 // ===== ERROR HANDLING =====
 window.addEventListener('error', (e) => {
     console.error('Global error:', e.error);
-    trackUserAction('error', {
-        message: e.message,
-        filename: e.filename,
-        lineno: e.lineno
-    });
 });
 
 // ===== NETWORK STATUS =====
@@ -563,23 +523,30 @@ window.addEventListener('offline', () => {
 });
 
 // ===== LAZY LOADING IMAGES =====
-const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.classList.add('loaded');
-            imageObserver.unobserve(img);
-        }
+function initLazyLoading() {
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                }
+                imageObserver.unobserve(img);
+            }
+        });
     });
-});
 
-document.querySelectorAll('img[data-src]').forEach(img => {
-    imageObserver.observe(img);
-});
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+
+initLazyLoading();
 
 // ===== PRODUCT FILTERING =====
 function filterProducts(category) {
+    console.log('Filtering products by:', category);
     const products = document.querySelectorAll('.product-card');
     const tabs = document.querySelectorAll('.category-tab');
     
@@ -605,181 +572,334 @@ function filterProducts(category) {
 
 // ===== QUICK VIEW MODAL =====
 function quickView(productId) {
+    console.log('Quick view for:', productId);
     const modal = document.getElementById('quickViewModal');
     const modalContent = document.getElementById('modalContent');
     
-    // Product details database
+    if (!modal || !modalContent) {
+        console.error('Modal elements not found');
+        alert('Quick view modal is not available. Please contact us directly for product details.');
+        return;
+    }
+    
+    // Product details database - Simplified to match your actual products
     const productDetails = {
+        // Laptops
         'dell-xps-15': {
             title: 'Dell XPS 15',
-            price: 'UGX 4,500,000',
-            description: 'Premium ultrabook with stunning 4K display, ideal for professionals and creators.',
+            price: 'UGX 5,200,000',
+            description: 'Premium ultrabook with stunning display, ideal for professionals and creators.',
             specs: [
-                'Intel Core i7-11800H',
-                '16GB DDR4 RAM',
-                '512GB NVMe SSD',
-                '15.6" 4K OLED Display',
-                'NVIDIA GeForce RTX 3050',
+                'Intel Core i7-13700H',
+                '32GB DDR5 RAM',
+                '1TB NVMe SSD',
+                'NVIDIA RTX 4050 6GB',
                 'Windows 11 Pro',
-                '1 Year Warranty'
+                '2 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Dell+XPS+15'
+            image: 'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-15-9530/media-gallery/black/notebook-xps-15-9530--black-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&wid=3500&hei=2405&qlt=100,1&resMode=sharp2&size=3500,2405'
         },
         'hp-elitebook-840': {
-            title: 'HP EliteBook 840',
-            price: 'UGX 2,800,000',
-            description: 'Business-class laptop with excellent performance and security features.',
+            title: 'HP EliteBook 840 G10',
+            price: 'UGX 3,900,000',
+            description: 'Business-class laptop with enterprise-grade security and exceptional performance.',
             specs: [
-                'Intel Core i5-1135G7',
-                '8GB DDR4 RAM',
-                '256GB NVMe SSD',
-                '14" Full HD Display',
-                'Windows 11 Pro',
-                'Fingerprint Reader',
-                '1 Year Warranty'
-            ],
-            image: 'https://via.placeholder.com/400x300?text=HP+EliteBook'
-        },
-        'lenovo-thinkpad-t14': {
-            title: 'Lenovo ThinkPad T14',
-            price: 'UGX 3,200,000',
-            description: 'Durable and reliable business laptop with AMD processing power.',
-            specs: [
-                'AMD Ryzen 5 Pro',
+                'Intel Core i7-1365U',
                 '16GB DDR4 RAM',
                 '512GB NVMe SSD',
                 '14" Full HD Display',
                 'Windows 11 Pro',
-                'Military-Grade Durability',
                 '3 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Lenovo+ThinkPad'
+            image: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08581396.png'
         },
-        'hp-pavilion-desktop': {
-            title: 'HP Pavilion Desktop',
-            price: 'UGX 2,200,000',
-            description: 'Versatile desktop for home and office use.',
+        'lenovo-x1-carbon': {
+            title: 'Lenovo ThinkPad X1 Carbon',
+            price: 'UGX 4,500,000',
+            description: 'Ultra-lightweight business laptop with legendary ThinkPad durability.',
             specs: [
-                'Intel Core i5-11400',
-                '8GB DDR4 RAM',
-                '1TB HDD + 256GB SSD',
+                'Intel Core i7-1365U',
+                '16GB LPDDR5 RAM',
+                '1TB NVMe SSD',
+                '14" 2.8K OLED Display',
+                'Windows 11 Pro',
+                '3 Year Warranty'
+            ],
+            image: 'https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8MjU2MDQ3fGltYWdlL3BuZ3xoY2UvaDc4LzE0MjM1MTUyMzYyMjM4LnBuZ3xjMTVlZGY1YjQwMjAxYjFhYTQ1YTBlNmFjNjU4YjY5YzIxMmRmYjQzZTYyYmM2Y2UyYzA3MzQ4YjQzZTNlMjE2/Lenovo-Laptops-ThinkPad-X1-Carbon-Gen-11-hero.png'
+        },
+        'asus-rog-g16': {
+            title: 'ASUS ROG Strix G16',
+            price: 'UGX 5,800,000',
+            description: 'High-performance gaming laptop with advanced cooling and stunning visuals.',
+            specs: [
+                'Intel Core i9-13980HX',
+                '32GB DDR5 RAM',
+                '1TB NVMe SSD',
+                'NVIDIA RTX 4070 8GB',
                 'Windows 11 Home',
-                'USB 3.0 Ports',
-                'HDMI Output',
+                '2 Year Warranty'
+            ],
+            image: 'https://dlcdnwebimgs.asus.com/gain/23efe61e-5ae0-4e8f-9077-7bf3d5d2ab7d/'
+        },
+        'acer-swift-3': {
+            title: 'Acer Swift 3',
+            price: 'UGX 2,300,000',
+            description: 'Thin and light laptop perfect for students and everyday use.',
+            specs: [
+                'Intel Core i5-1240P',
+                '8GB LPDDR4X RAM',
+                '512GB NVMe SSD',
+                '14" Full HD IPS Display',
+                'Windows 11 Home',
                 '1 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=HP+Pavilion'
+            image: 'https://static.acer.com/up/Resource/Acer/Laptops/Swift/SF314-511/Images/20220317/Acer-Swift-3-SF314-511-home--01.png'
+        },
+        
+        // Desktops
+        'hp-pavilion-desktop': {
+            title: 'HP Pavilion Desktop',
+            price: 'UGX 2,500,000',
+            description: 'Versatile desktop for home and office use with ample storage.',
+            specs: [
+                'Intel Core i5-13400',
+                '16GB DDR4 RAM',
+                '512GB NVMe SSD + 1TB HDD',
+                'Windows 11 Home',
+                'WiFi 6',
+                '1 Year Warranty'
+            ],
+            image: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08080083.png'
         },
         'dell-optiplex-7080': {
             title: 'Dell OptiPlex 7080',
-            price: 'UGX 3,500,000',
-            description: 'Powerful business desktop for demanding applications.',
+            price: 'UGX 3,800,000',
+            description: 'Powerful business desktop for demanding professional applications.',
             specs: [
                 'Intel Core i7-10700',
-                '16GB DDR4 RAM',
-                '512GB NVMe SSD',
+                '32GB DDR4 RAM',
+                '1TB NVMe SSD',
                 'Windows 10 Pro',
                 'Multiple Display Support',
                 '3 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Dell+OptiPlex'
+            image: 'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/desktops/optiplex-desktops/7080-tower/media-gallery/desktop-optiplex-7080-tower-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&wid=3500&hei=2405&qlt=100,1&resMode=sharp2&size=3500,2405'
         },
-        'logitech-mouse': {
-            title: 'Logitech Wireless Mouse',
-            price: 'UGX 45,000',
-            description: 'Reliable wireless mouse with silent click technology and long battery life.',
+        'mac-mini': {
+            title: 'Apple Mac Mini',
+            price: 'UGX 3,200,000',
+            description: 'Compact desktop with incredible performance and efficiency.',
             specs: [
-                '2.4GHz Wireless',
-                'Silent Click Technology',
-                '12-Month Battery Life',
-                'Plug-and-Play USB Receiver',
-                'Comfortable Ergonomic Design',
+                'Apple M2 Pro Chip',
+                '16GB Unified Memory',
+                '512GB SSD Storage',
+                'HDMI 2.1',
+                '2 Thunderbolt 4 Ports',
                 '1 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Logitech+Mouse'
+            image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-mini-hero-202301?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1670557187454'
         },
-        'mechanical-keyboard': {
-            title: 'RGB Mechanical Keyboard',
-            price: 'UGX 85,000',
-            description: 'Gaming keyboard with mechanical switches and customizable RGB lighting.',
+        
+        // Accessories
+        'mx-master-3s': {
+            title: 'Logitech MX Master 3S',
+            price: 'UGX 185,000',
+            description: 'Master-level precision and speed with quiet clicks and 8K DPI tracking.',
             specs: [
-                'Blue Mechanical Switches',
-                'RGB Backlighting',
-                'Wired USB Connection',
-                'Anti-Ghosting',
-                'Durable Construction',
-                '6-Month Warranty'
+                '8K DPI Optical Sensor',
+                'MagSpeed Electromagnetic Wheel',
+                'USB-C Charging',
+                '70-Day Battery Life',
+                'Bluetooth + USB Receiver',
+                '1 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Mechanical+Keyboard'
+            image: 'https://resource.logitech.com/w_1600,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/mice/mx-master-3s/gallery/mx-master-3s-mouse-graphite-top-view.png?v=1'
         },
-        'samsung-ssd': {
-            title: 'Samsung 870 EVO SSD',
-            price: 'UGX 280,000',
-            description: 'High-performance SSD for faster boot times and application loading.',
+        'keychron-k2': {
+            title: 'Keychron K2 Pro',
+            price: 'UGX 250,000',
+            description: 'Wireless mechanical keyboard with hot-swappable switches and RGB backlight.',
             specs: [
-                '1TB Capacity',
-                'SATA III Interface',
-                'Read Speed: 560MB/s',
-                'Write Speed: 530MB/s',
+                'Gateron G Pro Switches',
+                'Hot-swappable PCB',
+                'RGB Backlighting',
+                'Bluetooth 5.1',
+                '4000mAh Battery',
+                '1 Year Warranty'
+            ],
+            image: 'https://cdn.shopify.com/s/files/1/0059/0630/1017/products/Keychron-K2-wireless-mechanical-keyboard-for-mac-windows-ios_1800x1800.jpg?v=1676613033'
+        },
+        'dell-ultrasharp': {
+            title: 'Dell UltraSharp 27" 4K',
+            price: 'UGX 1,800,000',
+            description: 'Professional 4K monitor with exceptional color accuracy.',
+            specs: [
+                '27" 4K UHD (3840x2160)',
+                'IPS Panel',
+                '99% sRGB Coverage',
+                'USB-C Hub with 90W Power Delivery',
+                'Height Adjustable Stand',
+                '3 Year Warranty'
+            ],
+            image: 'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/peripherals/output-devices/dell/monitors/u-series/u2723qe/media-gallery/ultrasharp-27-4k-u2723qe-monitor-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&wid=3500&hei=2405&qlt=100,1&resMode=sharp2&size=3500,2405'
+        },
+        'arctis-nova-pro': {
+            title: 'SteelSeries Arctis Nova Pro',
+            price: 'UGX 550,000',
+            description: 'Premium wireless gaming headset with active noise cancellation.',
+            specs: [
+                'Active Noise Cancellation',
+                'Premium High-Fidelity Drivers',
+                'Wireless + Bluetooth 5.0',
+                'Dual Battery System',
+                'ClearCast Gen 2 Mic',
+                '2 Year Warranty'
+            ],
+            image: 'https://media.steelseriescdn.com/thumbs/catalogue/products/arctis-nova-pro-wireless/b87728c951d54b2b9d5cc10e9125f292.png.500x400_q100_crop-fit_optimize.png'
+        },
+        
+        // Storage
+        'samsung-990-pro': {
+            title: 'Samsung 990 Pro 2TB',
+            price: 'UGX 450,000',
+            description: 'Ultra-fast NVMe SSD for gamers and professionals.',
+            specs: [
+                '2TB Capacity',
+                'PCIe 4.0 NVMe M.2',
+                'Read Speed: 7,450 MB/s',
+                'Write Speed: 6,900 MB/s',
                 'Samsung V-NAND Technology',
                 '5 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Samsung+SSD'
+            image: 'https://images.samsung.com/is/image/samsung/p6pim/uk/mz-v8p2t0bw/gallery/uk-990-pro-mz-v8p2t0bw-535071673?$720_576_PNG$'
         },
-        'wd-external-hdd': {
-            title: 'WD 2TB External HDD',
-            price: 'UGX 320,000',
-            description: 'Portable external hard drive for backups and extra storage.',
+        'wd-black-p10': {
+            title: 'WD Black P10 4TB',
+            price: 'UGX 480,000',
+            description: 'High-capacity external HDD optimized for gaming.',
             specs: [
-                '2TB Capacity',
-                'USB 3.0 Interface',
-                'Portable Design',
-                'Plug-and-Play',
-                'Password Protection',
+                '4TB Capacity',
+                'USB 3.2 Gen 1',
+                'Read Speed: 140 MB/s',
+                'Rugged Design',
+                'No External Power Needed',
                 '2 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=WD+External+HDD'
+            image: 'https://www.wd.com/content/dam/western-digital/product/external/desktop/wd-black-p10-game-drive/hero/wd-black-p10-game-drive-4tb.png'
         },
-        'sandisk-usb': {
-            title: 'SanDisk Ultra USB 3.0',
-            price: 'From UGX 35,000',
-            description: 'High-speed USB flash drive for quick file transfers.',
+        'sandisk-extreme-pro': {
+            title: 'SanDisk Extreme Pro 256GB',
+            price: 'UGX 85,000',
+            description: 'High-performance USB drive for fast file transfers.',
             specs: [
-                '64GB/128GB/256GB Options',
-                'USB 3.0 Interface',
-                'Read Speed: 150MB/s',
-                'Retractable Design',
+                '256GB Capacity',
+                'USB 3.2 Gen 1',
+                'Read Speed: 420 MB/s',
+                'Write Speed: 380 MB/s',
+                'Aluminum Housing',
                 '5 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=SanDisk+USB'
+            image: 'https://www.westerndigital.com/content/dam/store/en-us/assets/products/usb-flash-drives/sandisk-extreme-pro-usb-3-2-solid-state-flash-drive/sandisk-extreme-pro-usb-3-2-solid-state-flash-drive-128gb.png'
         },
-        'gaming-headset': {
-            title: 'Gaming Headset',
-            price: 'UGX 120,000',
-            description: 'Immersive gaming headset with surround sound.',
+        
+        // Components
+        'i9-13900k': {
+            title: 'Intel Core i9-13900K',
+            price: 'UGX 1,200,000',
+            description: 'Flagship desktop processor for extreme performance.',
             specs: [
-                '7.1 Surround Sound',
+                '24 Cores (8P + 16E)',
+                '32 Threads',
+                'Max Turbo: 5.8 GHz',
+                '36MB L3 Cache',
+                'LGA1700 Socket',
+                '3 Year Warranty'
+            ],
+            image: 'https://www.intel.com/content/dam/products/hero/foreground/processor-core-i9-13900k.png'
+        },
+        'rtx-4080': {
+            title: 'NVIDIA RTX 4080 16GB',
+            price: 'UGX 3,500,000',
+            description: 'High-end graphics card for 4K gaming and creative work.',
+            specs: [
+                '16GB GDDR6X Memory',
+                '9728 CUDA Cores',
+                'Ray Tracing Cores',
+                'DLSS 3 Support',
+                '2.5 GHz Boost Clock',
+                '3 Year Warranty'
+            ],
+            image: 'https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ada/rtx-4080/geforce-rtx-4080-shop-600x336.png'
+        },
+        'corsair-vengeance': {
+            title: 'Corsair Vengeance 32GB',
+            price: 'UGX 280,000',
+            description: 'High-performance DDR5 RAM with RGB lighting.',
+            specs: [
+                '32GB (2x16GB) Kit',
+                'DDR5-6000MHz',
+                'CL36 Latency',
                 'RGB Lighting',
-                'Noise-Cancelling Microphone',
-                'Comfortable Ear Cushions',
-                'Multi-Platform Compatible',
-                '1 Year Warranty'
+                'Lifetime Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Gaming+Headset'
+            image: 'https://www.corsair.com/medias/sys_master/images/images/h90/hd9/9398511378462/vengeance-rgb-pro-black/CMW32GX4M4C3200C16/-hero-01.png'
         },
-        'laptop-stand': {
-            title: 'Adjustable Laptop Stand',
-            price: 'UGX 65,000',
-            description: 'Ergonomic laptop stand for better posture and cooling.',
+        'asus-rog-z790': {
+            title: 'ASUS ROG Maximus Z790',
+            price: 'UGX 950,000',
+            description: 'Premium motherboard for high-end gaming PCs.',
             specs: [
-                'Aluminum Construction',
-                'Foldable Design',
-                '7 Height Adjustments',
-                'Ventilation Design',
-                'Non-Slip Pads',
+                'Intel Z790 Chipset',
+                'LGA1700 Socket',
+                'DDR5 Support',
+                'PCIe 5.0 Slots',
+                'WiFi 6E + Bluetooth 5.3',
+                '3 Year Warranty'
+            ],
+            image: 'https://dlcdnwebimgs.asus.com/gain/4A2B1C8D-9F3E-4F5E-8A7B-9C1D2E3F4A5B'
+        },
+        
+        // Networking
+        'tp-link-ax73': {
+            title: 'TP-Link Archer AX73',
+            price: 'UGX 380,000',
+            description: 'High-speed WiFi 6 router for seamless connectivity.',
+            specs: [
+                'AX5400 Dual-Band',
+                'WiFi 6 Technology',
+                '6 External Antennas',
+                '4 Gigabit LAN Ports',
+                'HomeShield Security',
+                '2 Year Warranty'
+            ],
+            image: 'https://static.tp-link.com/uploads/product/archer_ax73/1681794429437-archer-ax73-v1-01.png'
+        },
+        'unifi-u6-pro': {
+            title: 'Ubiquiti UniFi U6 Pro',
+            price: 'UGX 420,000',
+            description: 'Enterprise-grade WiFi 6 access point.',
+            specs: [
+                'WiFi 6 (802.11ax)',
+                '5.3 Gbps Throughput',
+                '4x4 MIMO',
+                'PoE Powered',
+                'Managed via UniFi Controller',
                 '1 Year Warranty'
             ],
-            image: 'https://via.placeholder.com/400x300?text=Laptop+Stand'
+            image: 'https://dl.ubnt.com/image/u6-pro/datasheet/u6-pro-hero.png'
+        },
+        'cisco-9200': {
+            title: 'Cisco Catalyst 9200',
+            price: 'UGX 2,800,000',
+            description: 'Enterprise managed switch for business networks.',
+            specs: [
+                '24 Gigabit Ethernet Ports',
+                '4 SFP+ Uplinks',
+                'Managed Switch',
+                'Layer 3 Features',
+                'Limited Lifetime Warranty'
+            ],
+            image: 'https://www.cisco.com/c/dam/en/us/products/collateral/switches/catalyst-9200-series-switches/c9200-24p-4g-a.png'
         }
     };
     
@@ -794,23 +914,23 @@ function quickView(productId) {
     modalContent.innerHTML = `
         <div class="modal-grid">
             <div class="modal-image">
-                <img src="${product.image}" alt="${product.title}" onerror="this.src='logo.png'">
+                <img src="${product.image}" alt="${product.title}" style="max-width:100%; height:auto; border-radius:10px;" onerror="this.src='logo.png'">
             </div>
             <div class="modal-details">
-                <h2>${product.title}</h2>
-                <div class="modal-price">${product.price}</div>
-                <div class="modal-description">${product.description}</div>
-                <div class="modal-specs">
-                    <h4>Key Specifications:</h4>
-                    <ul>
-                        ${product.specs.map(spec => `<li><i class="fas fa-check-circle"></i> ${spec}</li>`).join('')}
+                <h2 style="color:#c0392b;">${product.title}</h2>
+                <div class="modal-price" style="font-size:1.8rem; font-weight:bold; color:#c0392b; margin:1rem 0;">${product.price}</div>
+                <div class="modal-description" style="margin:1rem 0; line-height:1.6;">${product.description}</div>
+                <div class="modal-specs" style="background:#f5f5f5; padding:1.5rem; border-radius:8px; margin:1.5rem 0;">
+                    <h4 style="margin-bottom:1rem; color:#333;">Key Specifications:</h4>
+                    <ul style="list-style:none; padding:0;">
+                        ${product.specs.map(spec => `<li style="margin:0.8rem 0;"><i class="fas fa-check-circle" style="color:#c0392b; margin-right:0.8rem;"></i> ${spec}</li>`).join('')}
                     </ul>
                 </div>
-                <div class="product-actions" style="justify-content: flex-start;">
-                    <button class="btn btn-primary" onclick="addToCart('${product.title}')">
+                <div class="product-actions" style="display:flex; gap:1rem; margin-top:2rem;">
+                    <button class="btn btn-primary" onclick="addToCart('${product.title}')" style="flex:1; padding:1rem;">
                         <i class="fas fa-shopping-cart"></i> Inquire Now
                     </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='contact.html'">
+                    <button class="btn btn-secondary" onclick="window.location.href='contact.html'" style="flex:1; padding:1rem;">
                         <i class="fas fa-envelope"></i> Contact Us
                     </button>
                 </div>
@@ -833,145 +953,203 @@ function closeQuickView() {
 
 // ===== ADD TO CART / INQUIRE =====
 function addToCart(productName) {
-    // Show inquiry message
-    alert(`Thank you for your interest in ${productName}!\n\nA member of our team will contact you shortly with more information.`);
+    alert(`Thank you for your interest in ${productName}!\n\nA member of our team will contact you shortly with more information. You can also reach us directly at +256 704210089.`);
     
-    // Track the inquiry
     if (typeof trackUserAction === 'function') {
         trackUserAction('product_inquiry', { product: productName });
     }
 }
 
-// ===== TESTIMONIAL SLIDER - MODIFIED FOR SLOWER TRANSITION =====
-// Replace the existing testimonial slider functions with these:
-
-
-let autoSlideInterval;
-
-function initTestimonialSlider() {
-    testimonials = document.querySelectorAll('.testimonial');
-    const container = document.getElementById('testimonialContainer');
-    const dotsContainer = document.getElementById('sliderDots');
-    
-    if (!container || testimonials.length === 0) return;
-    
-    totalSlides = testimonials.length;
-
-    // Create dots
-    dotsContainer.innerHTML = '';
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('span');
-        dot.classList.add('dot');
-        dot.setAttribute('onclick', `goToSlide(${i})`);
-        dotsContainer.appendChild(dot);
-    }
-
-    // Set container width
-    container.style.width = `${totalSlides * 100}%`;
-    testimonials.forEach(testimonial => {
-        testimonial.style.width = `${100 / totalSlides}%`;
-    });
-
-    updateSlider();
-    startAutoSlide();
-}
-
-function updateSlider() {
-    const container = document.getElementById('testimonialContainer');
-    const dots = document.querySelectorAll('.dot');
-    
-    if (!container) return;
-
-    container.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
-    
-    dots.forEach((dot, index) => {
-        if (index === currentSlide) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
-        }
-    });
-}
-
-function nextTestimonial() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateSlider();
-    
-    // Reset auto slide timer
-    resetAutoSlide();
-}
-
-function prevTestimonial() {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateSlider();
-    
-    // Reset auto slide timer
-    resetAutoSlide();
-}
-
-function goToSlide(index) {
-    currentSlide = index;
-    updateSlider();
-    
-    // Reset auto slide timer
-    resetAutoSlide();
-}
-
-function startAutoSlide() {
-    // Change slide every 8 seconds instead of 5 for better readability
-    autoSlideInterval = setInterval(() => {
-        nextTestimonial();
-    }, 8000);
-}
-
-function resetAutoSlide() {
-    clearInterval(autoSlideInterval);
-    startAutoSlide();
-}
-
 // ===== MODAL CLICK OUTSIDE =====
 document.addEventListener('click', function(event) {
     const modal = document.getElementById('quickViewModal');
-    if (event.target === modal) {
+    if (modal && event.target === modal) {
         closeQuickView();
     }
 });
 
 // ===== INITIALIZE PRODUCT FILTERS =====
 function initProductFilters() {
+    // Check if we're on the services page with product filters
     const filterButtons = document.querySelectorAll('.category-tab');
     if (filterButtons.length > 0) {
         filterProducts('all');
+        console.log('Product filters initialized');
     }
 }
 
-// Add to DOMContentLoaded event
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all features
-    initLoader();
-    initNavigation();
-    initTypingEffect();
-    initScrollProgress();
-    initStatsCounter();
-    initBackToTop();
-    initTestimonialSlider(); // This now uses the slower version
-    initNewsletterForm();
-    initServiceCards();
-    initScrollAnimations();
-    initParticles();
-    initProductFilters(); // Add this line
+// ===== DARK MODE TOGGLE =====
+function initDarkMode() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return; // Exit if button doesn't exist on this page
     
-    // Add smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+    const icon = themeToggle.querySelector('i');
+    
+    // Check for saved preference
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        if (icon) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        
+        // Update icon
+        if (icon) {
+            if (isDark) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
-        });
+        }
+        
+        // Save preference
+        localStorage.setItem('darkMode', isDark);
     });
-});
+}
+
+// Add dynamic styles if not already in CSS
+if (!document.querySelector('#dynamic-styles')) {
+    const style = document.createElement('style');
+    style.id = 'dynamic-styles';
+    style.textContent = `
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .service-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-modal.show {
+            opacity: 1;
+        }
+
+        .service-modal .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .service-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .service-info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .quick-view-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quick-view-modal.active {
+            display: flex;
+        }
+
+        .quick-view-modal .modal-content {
+            background: white;
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
