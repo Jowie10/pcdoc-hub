@@ -1,6 +1,6 @@
-# JAYPCDOC HUB UG LTD Website
+# PCDOC HUB Website
 
-Official website for JAYPCDOC HUB UG LTD, a leading provider of innovative digital solutions in Kampala, Uganda.
+Official website for PCDOC HUB , a leading provider of innovative digital solutions in Kampala, Uganda.
 
 ## Services
 - Website Design & Development
