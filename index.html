@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PCDOC HUB - Home</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -21,14 +20,14 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="PCDOC HUB Logo" class="logo-image">
+                <img src="logo.png" alt="PCDOC HUB Logo" class="logo-img">
                 <span class="logo-text">PCDOC HUB</span>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <span class="bar"></span>
@@ -39,14 +38,14 @@
     </header>
 
     <!-- Hero Section with Typing Effect -->
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="hero-content">
-            <h1 class="glitch-text">PCDOC HUB</h1>
+            <h1 class="glitch-text">PCDOC HUB UG LTD</h1>
             <p>We are <span class="typed-text"></span><span class="cursor">&nbsp;</span></p>
             <p class="hero-description">Your trusted partner in digital innovation and computer solutions</p>
             <div class="hero-buttons">
-                <a href="contact.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
-                <a href="services.html" class="btn btn-secondary">Our Services <i class="fas fa-cog"></i></a>
+                <a href="#contact" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                <a href="#services" class="btn btn-secondary">Our Services <i class="fas fa-cog"></i></a>
             </div>
         </div>
         <div class="hero-stats">
@@ -65,7 +64,30 @@
         </div>
     </section>
 
-    <!-- Features Section with Cards -->
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-image">
+                <img src="logo.png" alt="PCDOC HUB - Professional Digital Solutions in Kampala">
+            </div>
+            <div class="about-content">
+                <h2>Who We Are</h2>
+                <p>PCDOC HUB UG LTD is a premier digital solutions provider headquartered in Kampala, Uganda. With a passion for innovation and a commitment to excellence, we empower businesses across East Africa to establish, grow, and maintain a commanding online presence.</p>
+                
+                <h2>Our Mission</h2>
+                <p>To provide comprehensive, end-to-end digital solutions that transform how businesses operate online. From strategic website design and development to ongoing management, maintenance, and technical support.</p>
+                
+                <h2>Our Values</h2>
+                <ul class="values-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>Excellence:</strong> We never settle for less than the best</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Innovation:</strong> We embrace cutting-edge technologies</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Integrity:</strong> We build trust through transparency</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
     <section class="features">
         <h2 class="section-title">Why Choose Us?</h2>
         <div class="features-grid">
@@ -75,9 +97,6 @@
                 </div>
                 <h3>Fast Delivery</h3>
                 <p>Quick turnaround time for all our services</p>
-                <div class="feature-hover">
-                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
-                </div>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="feature-icon">
@@ -85,9 +104,6 @@
                 </div>
                 <h3>Secure Solutions</h3>
                 <p>Your data and systems are always protected</p>
-                <div class="feature-hover">
-                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
-                </div>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="feature-icon">
@@ -95,9 +111,6 @@
                 </div>
                 <h3>24/7 Support</h3>
                 <p>We're always here when you need us</p>
-                <div class="feature-hover">
-                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
-                </div>
             </div>
             <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="feature-icon">
@@ -105,41 +118,41 @@
                 </div>
                 <h3>10+ Years</h3>
                 <p>Years of industry experience</p>
-                <div class="feature-hover">
-                    <span>Learn more <i class="fas fa-arrow-right"></i></span>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- Services Preview -->
-    <section class="services-preview">
+    <section id="services" class="services-preview">
         <h2 class="section-title">Our Services</h2>
         <div class="services-grid">
-            <div class="service-card" onclick="showServiceDetails(1)">
+            <div class="service-card" onclick="location.href='services.html#laptops'">
                 <i class="fas fa-laptop-code"></i>
-                <h3>Web Development</h3>
-                <p>Custom websites tailored to your needs</p>
+                <h3>Laptops & Computers</h3>
+                <p>Quality new and used computers at affordable prices</p>
                 <div class="service-progress">
                     <div class="progress-bar" style="width: 0%" id="progress1"></div>
                 </div>
             </div>
-            <div class="service-card" onclick="showServiceDetails(2)">
+            <div class="service-card" onclick="location.href='services.html#accessories'">
                 <i class="fas fa-tools"></i>
-                <h3>Computer Repair</h3>
-                <p>Fast and reliable repair services</p>
+                <h3>Computer Accessories</h3>
+                <p>Mice, keyboards, headsets, and more</p>
                 <div class="service-progress">
                     <div class="progress-bar" style="width: 0%" id="progress2"></div>
                 </div>
             </div>
-            <div class="service-card" onclick="showServiceDetails(3)">
-                <i class="fas fa-shopping-cart"></i>
-                <h3>Computer Sales</h3>
-                <p>Quality new and used computers</p>
+            <div class="service-card" onclick="location.href='services.html#storage'">
+                <i class="fas fa-hdd"></i>
+                <h3>Storage Solutions</h3>
+                <p>SSDs, HDDs, and USB drives</p>
                 <div class="service-progress">
                     <div class="progress-bar" style="width: 0%" id="progress3"></div>
                 </div>
             </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="services.html" class="btn btn-primary">View All Products <i class="fas fa-arrow-right"></i></a>
         </div>
     </section>
 
@@ -172,23 +185,35 @@
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter">
-        <div class="newsletter-content">
-            <h3>Subscribe to Our Newsletter</h3>
-            <p>Get the latest updates and offers directly in your inbox!</p>
-            <form id="newsletterForm" class="newsletter-form">
-                <input type="email" placeholder="Enter your email" required>
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-            </form>
-            <div id="newsletterMessage" class="newsletter-message"></div>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+            <div class="contact-info-box">
+                <h2>Contact Information</h2>
+                <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
+                <p><i class="fas fa-phone"></i> +256 704210089</p>
+                <p><i class="fas fa-phone"></i> +256 779832156</p>
+                <p><i class="fas fa-envelope"></i> plwalanda@outlook.com</p>
+                <div class="contact-social">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h2>Send Message</h2>
+                <form id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="text" placeholder="Subject">
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
         </div>
     </section>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
     <!-- Footer -->
     <footer>
@@ -197,15 +222,16 @@
                 <h4>PCDOC HUB</h4>
                 <p><i class="fas fa-map-marker-alt"></i> Suncity Arcade, Kampala Road</p>
                 <p><i class="fas fa-phone"></i> +256 704210089</p>
+                <p><i class="fas fa-phone"></i> +256 779832156</p>
                 <p><i class="fas fa-envelope"></i> plwalanda@outlook.com</p>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -219,23 +245,29 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 PCDOC HUB. All Rights Reserved.</p>
-            <p>Designed by Jowie</p>
+            <p>&copy; 2026 PCDOC HUB UG LTD. All Rights Reserved.</p>
+            <p>Designed with <i class="fas fa-heart"></i> by Jowie</p>
         </div>
     </footer>
 
-    <!-- WhatsApp Button -->
-<a href="https://wa.me/256704210089?text=Hello%20PCDOC%20HUB%2C%20I'm%20interested%20in%20your%20products" 
-   class="whatsapp-float" 
-   target="_blank"
-   title="Chat with us on WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-</a>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-<!-- Dark Mode Toggle -->
-<button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-    <i class="fas fa-moon"></i>
-</button>
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/256704210089?text=Hello%20PCDOC%20HUB%2C%20I'm%20interested%20in%20your%20products" 
+       class="whatsapp-float" 
+       target="_blank"
+       title="Chat with us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
     <script src="script.js"></script>
 </body>
 </html>
